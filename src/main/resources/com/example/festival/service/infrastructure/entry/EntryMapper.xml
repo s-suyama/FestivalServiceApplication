@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.festival.service.infrastructure.entry.EntryMapper">
+
+    <select id="selectEntry" resultType="com.example.festival.service.domain.model.entry.Entry">
+        SELECT
+            e.festival_id AS "festivalId.value"
+        ,   e.entry_id AS "entryId.value"
+        ,   e.entry_name AS "entryName"
+        ,   e.entry_description AS "entryDescription"
+        ,   e.event_code AS "eventCode.value"
+        ,   e.capacity AS "capacity.value"
+        ,   e.participation_fees AS "participationFees.value"
+        ,   e.application_numbers AS "applicationNumbers.value"
+        ,   e.first_arrival_lottery_type AS "firstArrivalLotteryType"
+        ,   e.application_start_date AS "applicationStartDate.value"
+        ,   e.application_end_date AS "applicationEndDate.value"
+        ,   e.entry_status AS "entryStatus"
+        ,   le.lottery_date AS "lotteryDate.value"
+        FROM
+            entries e
+        LEFT JOIN
+            lottery_entries le
+        ON  e.festival_id = le.festival_id
+        AND e.entry_id = le.entry_id
+        WHERE
+            e.festival_id = #{festivalId.value}
+        AND e.entry_id = #{entryId.value}
+    </select>
+
+    <update id="updateEntry" parameterType="com.example.festival.service.domain.model.entry.Entry">
+        UPDATE entries
+        SET
+            entry_name = #{entryName}
+        ,   entry_description = #{entryDescription}
+        ,   event_code = #{eventCode.value}
+        ,   capacity = #{capacity.value}
+        ,   participation_fees = #{participationFees.value}
+        ,   application_numbers = #{applicationNumbers.value}
+        ,   first_arrival_lottery_type = #{firstArrivalLotteryType}
+        ,   application_start_date = #{applicationStartDate.value}
+        ,   application_end_date = #{applicationEndDate.value}
+        ,   entry_status = #{entryStatus}
+        WHERE
+            festival_id = #{festivalId.value}
+        AND entry_id = #{entryId.value}
+    </update>
+
+</mapper>
