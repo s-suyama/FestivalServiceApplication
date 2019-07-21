@@ -20,8 +20,6 @@ public class Application {
 
   ApplicationDate applicationDate;
 
-  LotteryResult lotteryResult;
-
   PaymentDate paymentDate;
 
   PointAmount usePoints;
@@ -43,7 +41,6 @@ public class Application {
     result.memberId = memberId;
     result.entryId = entryId;
     result.applicationDate = applicationDate;
-    result.lotteryResult = null;
     result.paymentDate = null;
     result.usePoints = new PointAmount(BigDecimal.ZERO);
 
@@ -64,10 +61,6 @@ public class Application {
 
   public ApplicationDate applicationDate() {
     return applicationDate;
-  }
-
-  public LotteryResult lotteryResult() {
-    return lotteryResult;
   }
 
   public PaymentDate paymentDate() {

@@ -59,7 +59,7 @@ public class ApplicationCommandService {
     entry.validateAndThrowBusinessErrorIfHasErrorForApplication(application);
 
     entry.incrementApplicationNumbers();
-    entryRepository.changeEntry(entry);
+    entryRepository.saveEntry(entry);
 
     applicationRepository.addApplication(application);
   }

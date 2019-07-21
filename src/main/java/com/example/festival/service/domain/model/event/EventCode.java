@@ -7,16 +7,16 @@ import com.example.festival.service.domain.ValueObject;
  */
 public class EventCode implements ValueObject {
 
-  private long value;
+  private Integer value;
 
-  public EventCode(long value) {
+  public EventCode(Integer value) {
     this.value = value;
   }
 
   private EventCode() {
   }
 
-  public long value() {
+  public Integer value() {
     return value;
   }
 }

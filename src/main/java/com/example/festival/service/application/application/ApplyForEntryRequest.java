@@ -15,17 +15,17 @@ public class ApplyForEntryRequest {
   @Getter
   @Setter
   @NotNull(message = "大会番号は必須です")
-  private Long festivalId;
+  private Integer festivalId;
 
   @Getter
   @Setter
   @NotNull(message = "会員番号は必須です")
-  private Long memberId;
+  private Integer memberId;
 
   @Getter
   @Setter
   @NotNull(message = "エントリ枠番号は必須です")
-  private Long entryId;
+  private Integer entryId;
 
   @Getter
   @Setter

@@ -10,7 +10,7 @@ import com.example.festival.service.support.BusinessErrorException;
 /**
  * エントリ枠 Entity.
  */
-public class Entry {
+public abstract class Entry {
 
   FestivalId festivalId;
 
@@ -36,9 +36,7 @@ public class Entry {
 
   EntryStatus entryStatus;
 
-  LotteryDate lotteryDate;
-
-  private Entry() {
+  protected Entry() {
   }
 
   /**
@@ -55,8 +53,7 @@ public class Entry {
       FirstArrivalLotteryType firstArrivalLotteryType,
       ApplicationStartDate applicationStartDate,
       ApplicationEndDate applicationEndDate,
-      EntryStatus entryStatus,
-      LotteryDate lotteryDate) {
+      EntryStatus entryStatus) {
 
     this.festivalId = festivalId;
     this.entryId = entryId;
@@ -70,7 +67,6 @@ public class Entry {
     this.applicationStartDate = applicationStartDate;
     this.applicationEndDate = applicationEndDate;
     this.entryStatus = entryStatus;
-    this.lotteryDate = lotteryDate;
   }
 
   /**
@@ -92,16 +88,9 @@ public class Entry {
   }
 
   /**
-   * 参加申込人数をインクリメントする.もし、先着順のエントリ枠が定員に達した場合は、参加者確定に変更する.
+   * 参加申込人数をインクリメントする.
    */
-  public void incrementApplicationNumbers() {
-    applicationNumbers = applicationNumbers.increment();
-
-    if (firstArrivalLotteryType == FirstArrivalLotteryType.firstArrival
-        && capacity.value() == applicationNumbers.value()) {
-      entryStatus = EntryStatus.participantConfirmation;
-    }
-  }
+  public abstract void incrementApplicationNumbers();
 
   public FestivalId festivalId() {
     return festivalId;
@@ -149,9 +138,5 @@ public class Entry {
 
   public EntryStatus entryStatus() {
     return entryStatus;
-  }
-
-  public LotteryDate lotteryDate() {
-    return lotteryDate;
   }
 }

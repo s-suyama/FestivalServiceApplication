@@ -27,13 +27,12 @@ class EntryTest {
     EntryId entryId = new EntryId(1);
     MemberId memberId = new MemberId(1);
 
-    Entry entry = new Entry(
+    Entry entry = new FirstArrivalEntry(
         festivalId, entryId, "一般枠", "説明", new EventCode(1), new NumberOfPeople(1),
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
-        FirstArrivalLotteryType.firstArrival,
         new ApplicationStartDate(LocalDate.of(2019, 4, 1)),
         new ApplicationEndDate(LocalDate.of(2019, 4, 2)),
-        EntryStatus.recruiting, null);
+        EntryStatus.recruiting);
 
     Application application =
         Application.createEntityForEntry(
@@ -51,13 +50,12 @@ class EntryTest {
     EntryId entryId = new EntryId(1);
     MemberId memberId = new MemberId(1);
 
-    Entry entry = new Entry(
+    Entry entry = new FirstArrivalEntry(
         festivalId, entryId, "一般枠", "説明", new EventCode(1), new NumberOfPeople(1),
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
-        FirstArrivalLotteryType.firstArrival,
         new ApplicationStartDate(LocalDate.of(2019, 4, 1)),
         new ApplicationEndDate(LocalDate.of(2019, 4, 2)),
-        EntryStatus.recruiting, null);
+        EntryStatus.recruiting);
 
     Application application =
         Application.createEntityForEntry(
@@ -75,13 +73,12 @@ class EntryTest {
     EntryId entryId = new EntryId(1);
     MemberId memberId = new MemberId(1);
 
-    Entry entry = new Entry(
+    Entry entry = new FirstArrivalEntry(
         festivalId, entryId, "一般枠", "説明", new EventCode(1), new NumberOfPeople(1),
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
-        FirstArrivalLotteryType.firstArrival,
         new ApplicationStartDate(LocalDate.of(2019, 4, 1)),
         new ApplicationEndDate(LocalDate.of(2019, 4, 2)),
-        EntryStatus.participantConfirmation, null);
+        EntryStatus.participantConfirmation);
 
     Application application =
         Application.createEntityForEntry(
@@ -99,13 +96,12 @@ class EntryTest {
     EntryId entryId = new EntryId(1);
     MemberId memberId = new MemberId(1);
 
-    Entry entry = new Entry(
+    Entry entry = new LotteryEntry(
         festivalId, entryId, "抽選枠", "説明", new EventCode(1), new NumberOfPeople(1),
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
-        FirstArrivalLotteryType.lottery,
         new ApplicationStartDate(LocalDate.of(2019, 4, 1)),
         new ApplicationEndDate(LocalDate.of(2019, 4, 2)),
-        EntryStatus.underLottery, null);
+        EntryStatus.underLottery, new LotteryDate(LocalDate.of(2019, 4, 3)), new EntryId(null));
 
     Application application =
         Application.createEntityForEntry(
@@ -122,13 +118,12 @@ class EntryTest {
     FestivalId festivalId = new FestivalId(1);
     EntryId entryId = new EntryId(1);
 
-    Entry entry = new Entry(
+    Entry entry = new FirstArrivalEntry(
         festivalId, entryId, "先着枠", "説明", new EventCode(1), new NumberOfPeople(1),
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
-        FirstArrivalLotteryType.firstArrival,
         new ApplicationStartDate(LocalDate.of(2019, 4, 1)),
         new ApplicationEndDate(LocalDate.of(2019, 4, 2)),
-        EntryStatus.recruiting, null);
+        EntryStatus.recruiting);
 
     entry.incrementApplicationNumbers();
 
@@ -145,13 +140,12 @@ class EntryTest {
     FestivalId festivalId = new FestivalId(1);
     EntryId entryId = new EntryId(1);
 
-    Entry entry = new Entry(
+    Entry entry = new LotteryEntry(
         festivalId, entryId, "抽選枠", "説明", new EventCode(1), new NumberOfPeople(1),
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
-        FirstArrivalLotteryType.lottery,
         new ApplicationStartDate(LocalDate.of(2019, 4, 1)),
         new ApplicationEndDate(LocalDate.of(2019, 4, 2)),
-        EntryStatus.recruiting, null);
+        EntryStatus.recruiting, new LotteryDate(LocalDate.of(2019, 4, 3)), new EntryId(null));
 
     entry.incrementApplicationNumbers();
 

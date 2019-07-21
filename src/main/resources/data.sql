@@ -222,11 +222,13 @@ INSERT INTO lottery_entries (
     festival_id
 ,   entry_id
 ,   lottery_date
+,   following_entry_id
 )
 VALUES (
     1
 ,   1
 ,   '2019-09-21'
+,   null
 )
 ;
 

@@ -7,16 +7,16 @@ import com.example.festival.service.domain.ValueObject;
  */
 public class FestivalId implements ValueObject {
 
-  long value;
+  Integer value;
 
-  public FestivalId(long value) {
+  public FestivalId(Integer value) {
     this.value = value;
   }
 
   private FestivalId() {
   }
 
-  public long value() {
+  public Integer value() {
     return value;
   }
 }

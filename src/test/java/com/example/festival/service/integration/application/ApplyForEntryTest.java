@@ -176,9 +176,9 @@ class ApplyForEntryTest {
 
     final Operation insertLotteryEntries =
         insertInto("lottery_entries")
-            .columns("festival_id", "entry_id", "lottery_date")
-            .values(1, 2, LocalDate.of(2019, 9, 26))
-            .values(3, 4, LocalDate.of(2018, 9, 26))
+            .columns("festival_id", "entry_id", "lottery_date", "following_entry_id")
+            .values(1, 2, LocalDate.of(2019, 9, 26), null)
+            .values(3, 4, LocalDate.of(2018, 9, 26), null)
             .build();
 
     final Operation insertMembers =
@@ -200,7 +200,6 @@ class ApplyForEntryTest {
             .column("member_id", 2)
             .column("entry_id", 1)
             .column("application_date", LocalDate.of(2019, 9, 11))
-            .column("lottery_result", null)
             .column("payment_date", null)
             .column("use_points", 0)
             .end()
@@ -228,9 +227,9 @@ class ApplyForEntryTest {
   void testApplyForFirstArrivalEntry() throws Exception {
 
     ApplyForEntryRequest request = new ApplyForEntryRequest();
-    request.setFestivalId(1L);
-    request.setEntryId(1L);
-    request.setMemberId(1L);
+    request.setFestivalId(1);
+    request.setEntryId(1);
+    request.setMemberId(1);
     request.setApplicationDate(LocalDate.of(2019, 9, 12));
 
     final String requestJson = objectMapper.writeValueAsString(request);
@@ -261,7 +260,6 @@ class ApplyForEntryTest {
         .value("member_id").isEqualTo(1)
         .value("entry_id").isEqualTo(1)
         .value("application_date").isEqualTo(DateValue.of(2019, 9, 12))
-        .value("lottery_result").isNull()
         .value("payment_date").isNull()
         .value("use_points").isEqualTo(0);
   }
@@ -271,9 +269,9 @@ class ApplyForEntryTest {
   void testApplyForLotteryEntry() throws Exception {
 
     ApplyForEntryRequest request = new ApplyForEntryRequest();
-    request.setFestivalId(1L);
-    request.setEntryId(2L);
-    request.setMemberId(1L);
+    request.setFestivalId(1);
+    request.setEntryId(2);
+    request.setMemberId(1);
     request.setApplicationDate(LocalDate.of(2019, 9, 21));
 
     final String requestJson = objectMapper.writeValueAsString(request);
@@ -304,7 +302,6 @@ class ApplyForEntryTest {
         .value("member_id").isEqualTo(1)
         .value("entry_id").isEqualTo(2)
         .value("application_date").isEqualTo(DateValue.of(2019, 9, 21))
-        .value("lottery_result").isNull()
         .value("payment_date").isNull()
         .value("use_points").isEqualTo(0);
   }
@@ -314,9 +311,9 @@ class ApplyForEntryTest {
   void testApplyForEntryOnApplicationStartDate() throws Exception {
 
     ApplyForEntryRequest request = new ApplyForEntryRequest();
-    request.setFestivalId(1L);
-    request.setEntryId(1L);
-    request.setMemberId(1L);
+    request.setFestivalId(1);
+    request.setEntryId(1);
+    request.setMemberId(1);
     request.setApplicationDate(LocalDate.of(2019, 9, 11));
 
     final String requestJson = objectMapper.writeValueAsString(request);
@@ -333,9 +330,9 @@ class ApplyForEntryTest {
   void testApplyForEntryOnApplicationEndDate() throws Exception {
 
     ApplyForEntryRequest request = new ApplyForEntryRequest();
-    request.setFestivalId(1L);
-    request.setEntryId(1L);
-    request.setMemberId(1L);
+    request.setFestivalId(1);
+    request.setEntryId(1);
+    request.setMemberId(1);
     request.setApplicationDate(LocalDate.of(2019, 9, 20));
 
     final String requestJson = objectMapper.writeValueAsString(request);
@@ -352,9 +349,9 @@ class ApplyForEntryTest {
   void testChangeEntryStatusForArrivalFirst() throws Exception {
 
     ApplyForEntryRequest request = new ApplyForEntryRequest();
-    request.setFestivalId(2L);
-    request.setEntryId(5L);
-    request.setMemberId(1L);
+    request.setFestivalId(2);
+    request.setEntryId(5);
+    request.setMemberId(1);
     request.setApplicationDate(LocalDate.of(2019, 10, 12));
 
     final String requestJson = objectMapper.writeValueAsString(request);
@@ -391,9 +388,9 @@ class ApplyForEntryTest {
   void testChangeEntryStatusForLottery() throws Exception {
 
     ApplyForEntryRequest request = new ApplyForEntryRequest();
-    request.setFestivalId(2L);
-    request.setEntryId(6L);
-    request.setMemberId(1L);
+    request.setFestivalId(2);
+    request.setEntryId(6);
+    request.setMemberId(1);
     request.setApplicationDate(LocalDate.of(2019, 10, 12));
 
     final String requestJson = objectMapper.writeValueAsString(request);
@@ -452,9 +449,9 @@ class ApplyForEntryTest {
     dbSetupTracker.skipNextLaunch();
 
     ApplyForEntryRequest request = new ApplyForEntryRequest();
-    request.setFestivalId(1L);
-    request.setEntryId(2L);
-    request.setMemberId(2L);
+    request.setFestivalId(1);
+    request.setEntryId(2);
+    request.setMemberId(2);
     request.setApplicationDate(LocalDate.of(2019, 9, 21));
 
     final String requestJson = objectMapper.writeValueAsString(request);
@@ -474,9 +471,9 @@ class ApplyForEntryTest {
     dbSetupTracker.skipNextLaunch();
 
     ApplyForEntryRequest request = new ApplyForEntryRequest();
-    request.setFestivalId(3L);
-    request.setEntryId(3L);
-    request.setMemberId(1L);
+    request.setFestivalId(3);
+    request.setEntryId(3);
+    request.setMemberId(1);
     request.setApplicationDate(LocalDate.of(2018, 9, 21));
 
     final String requestJson = objectMapper.writeValueAsString(request);
@@ -496,9 +493,9 @@ class ApplyForEntryTest {
     dbSetupTracker.skipNextLaunch();
 
     ApplyForEntryRequest request = new ApplyForEntryRequest();
-    request.setFestivalId(1L);
-    request.setEntryId(1L);
-    request.setMemberId(1L);
+    request.setFestivalId(1);
+    request.setEntryId(1);
+    request.setMemberId(1);
     request.setApplicationDate(LocalDate.of(2019, 9, 10));
 
     final String requestJson = objectMapper.writeValueAsString(request);
@@ -518,9 +515,9 @@ class ApplyForEntryTest {
     dbSetupTracker.skipNextLaunch();
 
     ApplyForEntryRequest request = new ApplyForEntryRequest();
-    request.setFestivalId(1L);
-    request.setEntryId(1L);
-    request.setMemberId(1L);
+    request.setFestivalId(1);
+    request.setEntryId(1);
+    request.setMemberId(1);
     request.setApplicationDate(LocalDate.of(2019, 9, 21));
 
     final String requestJson = objectMapper.writeValueAsString(request);

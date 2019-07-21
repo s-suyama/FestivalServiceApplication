@@ -6,5 +6,5 @@ public interface EntryRepository {
 
   Entry findEntry(FestivalId festivalId, EntryId entryId);
 
-  void changeEntry(Entry entry);
+  void saveEntry(Entry entry);
 }

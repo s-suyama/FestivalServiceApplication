@@ -119,8 +119,10 @@ CREATE TABLE lottery_entries (
     festival_id INT NOT NULL COMMENT '大会番号'
 ,   entry_id INT NOT NULL COMMENT 'エントリ枠番号'
 ,   lottery_date DATE NOT NULL COMMENT '抽選年月日'
+,   following_entry_id INT COMMENT '後続エントリ枠番号'
 ,   PRIMARY KEY (festival_id, entry_id)
-,   CONSTRAINT fk_drawing_entries_festival_id_entry_id FOREIGN KEY (festival_id, entry_id) REFERENCES entries (festival_id, entry_id)
+,   CONSTRAINT fk_lottery_entries_festival_id_entry_id FOREIGN KEY (festival_id, entry_id) REFERENCES entries (festival_id, entry_id)
+,   CONSTRAINT fk_lottery_entries_festival_id_following_entry_id FOREIGN KEY (festival_id, following_entry_id) REFERENCES lottery_entries (festival_id, entry_id)
 )
 COMMENT = '抽選エントリ枠'
 ;
@@ -146,7 +148,6 @@ CREATE TABLE applications (
 ,   member_id INT NOT NULL COMMENT '会員番号'
 ,   entry_id INT NOT NULL COMMENT 'エントリ枠番号'
 ,   application_date DATE NOT NULL COMMENT '参加申込年月日'
-,   lottery_result ENUM('winning', 'failed') COMMENT '抽選結果'
 ,   payment_date DATE COMMENT '入金年月日'
 ,   use_points DECIMAL(10, 2) NOT NULL COMMENT '使用ポイント'
 ,   PRIMARY KEY (festival_id, member_id)
@@ -157,8 +158,20 @@ CREATE TABLE applications (
 COMMENT = '参加申込み'
 ;
 
+CREATE TABLE lottery_entry_results (
+    festival_id INT NOT NULL COMMENT '大会番号'
+,   member_id INT NOT NULL COMMENT '会員番号'
+,   entry_id INT NOT NULL COMMENT 'エントリ枠番号'
+,   lottery_result ENUM('winning', 'failed') NOT NULL COMMENT '抽選結果'
+,   PRIMARY KEY (festival_id, member_id, entry_id)
+,   CONSTRAINT fk_lottery_entry_results_festival_id_entry_id FOREIGN KEY (festival_id, entry_id) REFERENCES lottery_entries (festival_id, entry_id)
+,   CONSTRAINT fk_lottery_entry_results_member_id FOREIGN KEY (member_id) REFERENCES members (member_id)
+)
+COMMENT = '抽選結果'
+;
+
 CREATE TABLE member_points (
-    member_id INT NOT NULL COMMENT '会員ID'
+    member_id INT NOT NULL COMMENT '会員番号'
 ,   balance DECIMAL(10,2) NOT NULL COMMENT 'ポイント残高'
 ,   PRIMARY KEY (member_id)
 ,   CONSTRAINT fk_member_points_member_id FOREIGN KEY (member_id) REFERENCES members (member_id)

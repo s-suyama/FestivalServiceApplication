@@ -9,16 +9,16 @@ import java.util.Objects;
  */
 public class EntryId implements ValueObject {
 
-  private long value;
+  private Integer value;
 
   private EntryId() {
   }
 
-  public EntryId(long value) {
+  public EntryId(Integer value) {
     this.value = value;
   }
 
-  public long value() {
+  public Integer value() {
     return value;
   }
 
@@ -31,7 +31,7 @@ public class EntryId implements ValueObject {
       return false;
     }
     EntryId entryId = (EntryId) o;
-    return value == entryId.value;
+    return Objects.equals(value, entryId.value);
   }
 
   @Override

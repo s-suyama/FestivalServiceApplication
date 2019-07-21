@@ -10,7 +10,6 @@
         ,   member_id AS "memberId.value"
         ,   entry_id AS "entryId.value"
         ,   application_date AS "applicationDate.value"
-        ,   lottery_result AS "lotteyResult"
         ,   payment_date AS "paymentDate.value"
         ,   use_points AS "usePoints.value"
         FROM
@@ -26,7 +25,6 @@
         ,   member_id
         ,   entry_id
         ,   application_date
-        ,   lottery_result
         ,   payment_date
         ,   use_points
         )
@@ -35,7 +33,6 @@
         ,   #{memberId.value}
         ,   #{entryId.value}
         ,   #{applicationDate.value}
-        ,   #{lotteryResult}
         ,   #{paymentDate.value}
         ,   #{usePoints.value}
         )

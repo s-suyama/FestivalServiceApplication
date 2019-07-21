@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface EntryMapper {
 
-  Entry selectEntry(
+  EntryDto selectEntry(
       @Param("festivalId") FestivalId festivalId,
       @Param("entryId") EntryId entryId);
 

@@ -1,4 +1,4 @@
-package com.example.festival.service.domain.model.application;
+package com.example.festival.service.domain.model.lotteryentryresult;
 
 /**
  * 抽選結果.
