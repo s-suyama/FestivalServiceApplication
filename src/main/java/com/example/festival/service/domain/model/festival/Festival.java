@@ -2,6 +2,8 @@ package com.example.festival.service.domain.model.festival;
 
 import com.example.festival.service.domain.model.sponsor.Sponsor;
 
+import java.time.LocalDate;
+
 /**
  * 大会 Entity.
  */
@@ -13,7 +15,7 @@ public class Festival {
 
   Sponsor sponsor;
 
-  HeldDate heldDate;
+  LocalDate heldDate;
 
   PrefectureCode heldPlacePrefectureCode;
 
@@ -24,7 +26,7 @@ public class Festival {
       FestivalId festivalId,
       String festivalName,
       Sponsor sponsor,
-      HeldDate heldDate,
+      LocalDate heldDate,
       PrefectureCode heldPlacePrefectureCode) {
 
     this.festivalId = festivalId;

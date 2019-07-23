@@ -15,10 +15,10 @@
         ,   e.participation_fees AS "participationFees.value"
         ,   e.application_numbers AS "applicationNumbers.value"
         ,   e.first_arrival_lottery_type AS "firstArrivalLotteryType"
-        ,   e.application_start_date AS "applicationStartDate.value"
-        ,   e.application_end_date AS "applicationEndDate.value"
+        ,   e.application_start_date AS "applicationStartDate"
+        ,   e.application_end_date AS "applicationEndDate"
         ,   e.entry_status AS "entryStatus"
-        ,   le.lottery_date AS "lotteryDate.value"
+        ,   le.lottery_date AS "lotteryDate"
         ,   le.following_entry_id AS "followingEntryId.value"
         FROM
             entries e
@@ -41,8 +41,8 @@
         ,   participation_fees = #{participationFees.value}
         ,   application_numbers = #{applicationNumbers.value}
         ,   first_arrival_lottery_type = #{firstArrivalLotteryType}
-        ,   application_start_date = #{applicationStartDate.value}
-        ,   application_end_date = #{applicationEndDate.value}
+        ,   application_start_date = #{applicationStartDate}
+        ,   application_end_date = #{applicationEndDate}
         ,   entry_status = #{entryStatus}
         WHERE
             festival_id = #{festivalId.value}

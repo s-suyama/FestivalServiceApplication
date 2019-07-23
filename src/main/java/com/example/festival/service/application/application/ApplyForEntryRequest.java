@@ -1,6 +1,5 @@
 package com.example.festival.service.application.application;
 
-import com.example.festival.service.domain.model.application.ApplicationDate;
 import com.example.festival.service.domain.model.entry.EntryId;
 import com.example.festival.service.domain.model.festival.FestivalId;
 import com.example.festival.service.domain.model.member.MemberId;
@@ -43,9 +42,5 @@ public class ApplyForEntryRequest {
 
   EntryId entryId() {
     return new EntryId(entryId);
-  }
-
-  ApplicationDate applicationDate() {
-    return new ApplicationDate(applicationDate);
   }
 }

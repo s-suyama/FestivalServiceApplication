@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.example.festival.service.domain.model.application.Application;
-import com.example.festival.service.domain.model.application.ApplicationDate;
 import com.example.festival.service.domain.model.event.EventCode;
 import com.example.festival.service.domain.model.festival.FestivalId;
 import com.example.festival.service.domain.model.member.MemberId;
@@ -30,13 +29,13 @@ class EntryTest {
     Entry entry = new FirstArrivalEntry(
         festivalId, entryId, "一般枠", "説明", new EventCode(1), new NumberOfPeople(1),
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
-        new ApplicationStartDate(LocalDate.of(2019, 4, 1)),
-        new ApplicationEndDate(LocalDate.of(2019, 4, 2)),
+        LocalDate.of(2019, 4, 1),
+        LocalDate.of(2019, 4, 2),
         EntryStatus.recruiting);
 
     Application application =
         Application.createEntityForEntry(
-            festivalId, memberId, entryId, new ApplicationDate(LocalDate.of(2019, 3, 30)));
+            festivalId, memberId, entryId, LocalDate.of(2019, 3, 30));
 
     assertThrows(BusinessErrorException.class, () ->
         entry.validateAndThrowBusinessErrorIfHasErrorForApplication(application));
@@ -53,13 +52,13 @@ class EntryTest {
     Entry entry = new FirstArrivalEntry(
         festivalId, entryId, "一般枠", "説明", new EventCode(1), new NumberOfPeople(1),
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
-        new ApplicationStartDate(LocalDate.of(2019, 4, 1)),
-        new ApplicationEndDate(LocalDate.of(2019, 4, 2)),
+        LocalDate.of(2019, 4, 1),
+        LocalDate.of(2019, 4, 2),
         EntryStatus.recruiting);
 
     Application application =
         Application.createEntityForEntry(
-            festivalId, memberId, entryId, new ApplicationDate(LocalDate.of(2019, 4, 3)));
+            festivalId, memberId, entryId, LocalDate.of(2019, 4, 3));
 
     assertThrows(BusinessErrorException.class, () ->
         entry.validateAndThrowBusinessErrorIfHasErrorForApplication(application));
@@ -76,13 +75,13 @@ class EntryTest {
     Entry entry = new FirstArrivalEntry(
         festivalId, entryId, "一般枠", "説明", new EventCode(1), new NumberOfPeople(1),
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
-        new ApplicationStartDate(LocalDate.of(2019, 4, 1)),
-        new ApplicationEndDate(LocalDate.of(2019, 4, 2)),
+        LocalDate.of(2019, 4, 1),
+        LocalDate.of(2019, 4, 2),
         EntryStatus.participantConfirmation);
 
     Application application =
         Application.createEntityForEntry(
-            festivalId, memberId, entryId, new ApplicationDate(LocalDate.of(2019, 4, 1)));
+            festivalId, memberId, entryId, LocalDate.of(2019, 4, 1));
 
     assertThrows(BusinessErrorException.class, () ->
         entry.validateAndThrowBusinessErrorIfHasErrorForApplication(application));
@@ -99,13 +98,13 @@ class EntryTest {
     Entry entry = new LotteryEntry(
         festivalId, entryId, "抽選枠", "説明", new EventCode(1), new NumberOfPeople(1),
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
-        new ApplicationStartDate(LocalDate.of(2019, 4, 1)),
-        new ApplicationEndDate(LocalDate.of(2019, 4, 2)),
-        EntryStatus.underLottery, new LotteryDate(LocalDate.of(2019, 4, 3)), new EntryId(null));
+        LocalDate.of(2019, 4, 1),
+        LocalDate.of(2019, 4, 2),
+        EntryStatus.underLottery, LocalDate.of(2019, 4, 3), new EntryId(null));
 
     Application application =
         Application.createEntityForEntry(
-            festivalId, memberId, entryId, new ApplicationDate(LocalDate.of(2019, 4, 1)));
+            festivalId, memberId, entryId, LocalDate.of(2019, 4, 1));
 
     assertThrows(BusinessErrorException.class, () ->
         entry.validateAndThrowBusinessErrorIfHasErrorForApplication(application));
@@ -121,8 +120,8 @@ class EntryTest {
     Entry entry = new FirstArrivalEntry(
         festivalId, entryId, "先着枠", "説明", new EventCode(1), new NumberOfPeople(1),
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
-        new ApplicationStartDate(LocalDate.of(2019, 4, 1)),
-        new ApplicationEndDate(LocalDate.of(2019, 4, 2)),
+        LocalDate.of(2019, 4, 1),
+        LocalDate.of(2019, 4, 2),
         EntryStatus.recruiting);
 
     entry.incrementApplicationNumbers();
@@ -143,9 +142,9 @@ class EntryTest {
     Entry entry = new LotteryEntry(
         festivalId, entryId, "抽選枠", "説明", new EventCode(1), new NumberOfPeople(1),
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
-        new ApplicationStartDate(LocalDate.of(2019, 4, 1)),
-        new ApplicationEndDate(LocalDate.of(2019, 4, 2)),
-        EntryStatus.recruiting, new LotteryDate(LocalDate.of(2019, 4, 3)), new EntryId(null));
+        LocalDate.of(2019, 4, 1),
+        LocalDate.of(2019, 4, 2),
+        EntryStatus.recruiting, LocalDate.of(2019, 4, 3), new EntryId(null));
 
     entry.incrementApplicationNumbers();
 

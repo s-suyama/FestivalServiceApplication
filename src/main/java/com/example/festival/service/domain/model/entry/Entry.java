@@ -7,6 +7,8 @@ import com.example.festival.service.domain.type.Amount;
 import com.example.festival.service.domain.type.NumberOfPeople;
 import com.example.festival.service.support.BusinessErrorException;
 
+import java.time.LocalDate;
+
 /**
  * エントリ枠 Entity.
  */
@@ -30,9 +32,9 @@ public abstract class Entry {
 
   FirstArrivalLotteryType firstArrivalLotteryType;
 
-  ApplicationStartDate applicationStartDate;
+  LocalDate applicationStartDate;
 
-  ApplicationEndDate applicationEndDate;
+  LocalDate applicationEndDate;
 
   EntryStatus entryStatus;
 
@@ -51,8 +53,8 @@ public abstract class Entry {
       Amount participationFees,
       NumberOfPeople applicationNumbers,
       FirstArrivalLotteryType firstArrivalLotteryType,
-      ApplicationStartDate applicationStartDate,
-      ApplicationEndDate applicationEndDate,
+      LocalDate applicationStartDate,
+      LocalDate applicationEndDate,
       EntryStatus entryStatus) {
 
     this.festivalId = festivalId;
@@ -89,11 +91,11 @@ public abstract class Entry {
       throw new BusinessErrorException("指定した大会は現在募集を行っておりません");
     }
 
-    if (application.applicationDate().value().compareTo(applicationStartDate.value()) < 0) {
+    if (application.applicationDate().compareTo(applicationStartDate) < 0) {
       throw new BusinessErrorException("指定した大会はまだ募集を開始していません");
     }
 
-    if (application.applicationDate().value().compareTo(applicationEndDate.value()) > 0) {
+    if (application.applicationDate().compareTo(applicationEndDate) > 0) {
       throw new BusinessErrorException("指定した大会の募集期間を過ぎています");
     }
   }
@@ -134,11 +136,11 @@ public abstract class Entry {
     return firstArrivalLotteryType;
   }
 
-  public ApplicationStartDate applicationStartDate() {
+  public LocalDate applicationStartDate() {
     return applicationStartDate;
   }
 
-  public ApplicationEndDate applicationEndDate() {
+  public LocalDate applicationEndDate() {
     return applicationEndDate;
   }
 

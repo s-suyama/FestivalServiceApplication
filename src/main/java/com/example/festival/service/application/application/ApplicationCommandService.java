@@ -1,7 +1,6 @@
 package com.example.festival.service.application.application;
 
 import com.example.festival.service.domain.model.application.Application;
-import com.example.festival.service.domain.model.application.ApplicationDate;
 import com.example.festival.service.domain.model.application.ApplicationRepository;
 import com.example.festival.service.domain.model.entry.Entry;
 import com.example.festival.service.domain.model.entry.EntryId;
@@ -11,6 +10,7 @@ import com.example.festival.service.domain.model.member.Member;
 import com.example.festival.service.domain.model.member.MemberId;
 import com.example.festival.service.domain.model.member.MemberRepository;
 import com.example.festival.service.support.BusinessErrorException;
+import java.time.LocalDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +45,7 @@ public class ApplicationCommandService {
     final FestivalId festivalId = request.festivalId();
     final MemberId memberId = request.memberId();
     final EntryId entryId = request.entryId();
-    final ApplicationDate applicationDate = request.applicationDate();
+    final LocalDate applicationDate = request.getApplicationDate();
 
     final Application alreadyApplication =
         applicationRepository.findApplication(festivalId, memberId);

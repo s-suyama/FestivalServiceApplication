@@ -5,6 +5,8 @@ import com.example.festival.service.domain.model.festival.FestivalId;
 import com.example.festival.service.domain.type.Amount;
 import com.example.festival.service.domain.type.NumberOfPeople;
 
+import java.time.LocalDate;
+
 /**
  * 先着順エントリ枠 Entity.
  */
@@ -37,8 +39,8 @@ public class FirstArrivalEntry extends Entry {
       NumberOfPeople capacity,
       Amount participationFees,
       NumberOfPeople applicationNumbers,
-      ApplicationStartDate applicationStartDate,
-      ApplicationEndDate applicationEndDate,
+      LocalDate applicationStartDate,
+      LocalDate applicationEndDate,
       EntryStatus entryStatus) {
 
     super(

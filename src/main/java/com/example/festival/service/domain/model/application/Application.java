@@ -6,6 +6,7 @@ import com.example.festival.service.domain.model.member.MemberId;
 import com.example.festival.service.domain.type.PointAmount;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * 参加申込 Entity.
@@ -18,9 +19,9 @@ public class Application {
 
   EntryId entryId;
 
-  ApplicationDate applicationDate;
+  LocalDate applicationDate;
 
-  PaymentDate paymentDate;
+  LocalDate paymentDate;
 
   PointAmount usePoints;
 
@@ -34,7 +35,7 @@ public class Application {
       FestivalId festivalId,
       MemberId memberId,
       EntryId entryId,
-      ApplicationDate applicationDate) {
+      LocalDate applicationDate) {
 
     Application result = new Application();
     result.festivalId = festivalId;
@@ -59,11 +60,11 @@ public class Application {
     return entryId;
   }
 
-  public ApplicationDate applicationDate() {
+  public LocalDate applicationDate() {
     return applicationDate;
   }
 
-  public PaymentDate paymentDate() {
+  public LocalDate paymentDate() {
     return paymentDate;
   }
 

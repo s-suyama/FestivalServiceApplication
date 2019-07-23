@@ -9,8 +9,8 @@
             festival_id AS "festivalId.value"
         ,   member_id AS "memberId.value"
         ,   entry_id AS "entryId.value"
-        ,   application_date AS "applicationDate.value"
-        ,   payment_date AS "paymentDate.value"
+        ,   application_date AS "applicationDate"
+        ,   payment_date AS "paymentDate"
         ,   use_points AS "usePoints.value"
         FROM
             applications
@@ -32,8 +32,8 @@
             #{festivalId.value}
         ,   #{memberId.value}
         ,   #{entryId.value}
-        ,   #{applicationDate.value}
-        ,   #{paymentDate.value}
+        ,   #{applicationDate}
+        ,   #{paymentDate}
         ,   #{usePoints.value}
         )
     </insert>
