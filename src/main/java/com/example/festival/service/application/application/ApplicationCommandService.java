@@ -47,6 +47,11 @@ public class ApplicationCommandService {
     final EntryId entryId = request.entryId();
     final LocalDate applicationDate = request.getApplicationDate();
 
+    final Member member = memberRepository.findMember(request.memberId());
+    if (member == null) {
+      throw new BusinessErrorException("存在しない会員です");
+    }
+
     final Application alreadyApplication =
         applicationRepository.findApplication(festivalId, memberId);
 
@@ -58,11 +63,6 @@ public class ApplicationCommandService {
 
     if (entry == null) {
       throw new BusinessErrorException("存在しないエントリ枠です");
-    }
-
-    final Member member = memberRepository.findMember(request.memberId());
-    if (member == null) {
-      throw new BusinessErrorException("存在しない会員です");
     }
 
     final Application application = Application.createEntityForEntry(
