@@ -122,7 +122,6 @@ CREATE TABLE lottery_entries (
 ,   following_entry_id INT COMMENT '後続エントリ枠番号'
 ,   PRIMARY KEY (festival_id, entry_id)
 ,   CONSTRAINT fk_lottery_entries_festival_id_entry_id FOREIGN KEY (festival_id, entry_id) REFERENCES entries (festival_id, entry_id)
-,   CONSTRAINT fk_lottery_entries_festival_id_following_entry_id FOREIGN KEY (festival_id, following_entry_id) REFERENCES lottery_entries (festival_id, entry_id)
 )
 COMMENT = '抽選エントリ枠'
 ;

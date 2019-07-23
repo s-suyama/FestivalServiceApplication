@@ -1,5 +1,9 @@
 package com.example.festival.service.domain.model.sponsor;
 
+import com.example.festival.service.domain.type.Address;
+import com.example.festival.service.domain.type.Email;
+import com.example.festival.service.domain.type.PhoneNumber;
+
 /**
  * 主催者 Entity.
  */

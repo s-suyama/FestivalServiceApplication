@@ -1,4 +1,4 @@
-package com.example.festival.service.domain.model.sponsor;
+package com.example.festival.service.domain.type;
 
 import com.example.festival.service.domain.ValueObject;
 

@@ -5,6 +5,9 @@ import com.example.festival.service.domain.model.festival.FestivalId;
 import com.example.festival.service.domain.type.Amount;
 import com.example.festival.service.domain.type.NumberOfPeople;
 
+/**
+ * 先着順エントリ枠 Entity.
+ */
 public class FirstArrivalEntry extends Entry {
 
   private FirstArrivalEntry() {
@@ -52,6 +55,11 @@ public class FirstArrivalEntry extends Entry {
         applicationEndDate,
         entryStatus
     );
+  }
+
+  @Override
+  public boolean isLotteryEntry() {
+    return false;
   }
 
   /**

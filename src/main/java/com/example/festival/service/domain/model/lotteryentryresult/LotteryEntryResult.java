@@ -1,13 +1,16 @@
 package com.example.festival.service.domain.model.lotteryentryresult;
 
-import com.example.festival.service.domain.model.entry.LotteryEntry;
+import com.example.festival.service.domain.model.entry.EntryId;
+import com.example.festival.service.domain.model.festival.FestivalId;
 import com.example.festival.service.domain.model.member.MemberId;
 
 public class LotteryEntryResult {
 
-  LotteryEntry lotteryEntry;
+  FestivalId festivalId;
 
   MemberId memberId;
+
+  EntryId entryId;
 
   LotteryResult lotteryResult;
 
@@ -18,12 +21,18 @@ public class LotteryEntryResult {
    * All argument constructor.
    */
   public LotteryEntryResult(
-      LotteryEntry lotteryEntry,
+      FestivalId festivalId,
       MemberId memberId,
+      EntryId entryId,
       LotteryResult lotteryResult) {
 
-    this.lotteryEntry = lotteryEntry;
+    this.festivalId = festivalId;
     this.memberId = memberId;
+    this.entryId = entryId;
     this.lotteryResult = lotteryResult;
+  }
+
+  public LotteryResult lotteryResult() {
+    return lotteryResult;
   }
 }

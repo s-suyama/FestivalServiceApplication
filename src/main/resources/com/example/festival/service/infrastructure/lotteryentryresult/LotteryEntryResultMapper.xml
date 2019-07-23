@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.festival.service.infrastructure.lotteryentryresult.LotteryEntryResultMapper">
+
+    <select id="selectLotteryEntryResult" resultType="com.example.festival.service.domain.model.lotteryentryresult.LotteryEntryResult">
+        SELECT
+            festival_id AS "festivalId.value"
+        ,   member_id AS "memberId.value"
+        ,   entry_id AS "entryId.value"
+        ,   lottery_result AS "lotteryResult"
+        FROM
+            lottery_entry_results
+        WHERE
+            festival_id = #{festivalId.value}
+        AND member_id = #{memberId.value}
+        AND entry_id = #{entryId.value}
+    </select>
+
+    <insert id="insertLotteryEntryResult" parameterType="com.example.festival.service.domain.model.lotteryentryresult.LotteryEntryResult">
+        INSERT INTO lottery_entry_results (
+            festival_id
+        ,   member_id
+        ,   entry_id
+        ,   lottery_result
+        )
+        VALUES (
+            #{festivalId.value}
+        ,   #{memberId.value}
+        ,   #{entryId.value}
+        ,   #{lotteryResult}
+        )
+    </insert>
+
+</mapper>

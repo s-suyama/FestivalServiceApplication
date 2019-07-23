@@ -70,6 +70,17 @@ public abstract class Entry {
   }
 
   /**
+   * 抽選のエントリ枠かどうかを返す.
+   * @return 抽選のエントリ枠の場合、 true を返す.
+   */
+  public abstract boolean isLotteryEntry();
+
+  /**
+   * 参加申込人数をインクリメントする.
+   */
+  public abstract void incrementApplicationNumbers();
+
+  /**
    * 申込内容にエラーがないかを検証し、エラーがある場合、業務例外を throw する.
    */
   public void validateAndThrowBusinessErrorIfHasErrorForApplication(Application application) {
@@ -86,11 +97,6 @@ public abstract class Entry {
       throw new BusinessErrorException("指定した大会の募集期間を過ぎています");
     }
   }
-
-  /**
-   * 参加申込人数をインクリメントする.
-   */
-  public abstract void incrementApplicationNumbers();
 
   public FestivalId festivalId() {
     return festivalId;

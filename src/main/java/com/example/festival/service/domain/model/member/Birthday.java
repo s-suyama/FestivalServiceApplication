@@ -1,24 +1,20 @@
 package com.example.festival.service.domain.model.member;
 
-import com.example.festival.service.domain.ValueObject;
-
+import java.time.LocalDate;
 import java.util.Objects;
 
-/**
- * 会員番号.
- */
-public class MemberId implements ValueObject {
+public class Birthday {
 
-  private Integer value;
+  private LocalDate value;
 
-  private MemberId() {
+  private Birthday() {
   }
 
-  public MemberId(Integer value) {
+  public Birthday(LocalDate value) {
     this.value = value;
   }
 
-  public Integer value() {
+  public LocalDate value() {
     return value;
   }
 
@@ -30,8 +26,8 @@ public class MemberId implements ValueObject {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MemberId memberId = (MemberId) o;
-    return Objects.equals(value, memberId.value);
+    Birthday birthday = (Birthday) o;
+    return Objects.equals(value, birthday.value);
   }
 
   @Override

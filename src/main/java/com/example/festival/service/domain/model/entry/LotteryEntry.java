@@ -5,6 +5,9 @@ import com.example.festival.service.domain.model.festival.FestivalId;
 import com.example.festival.service.domain.type.Amount;
 import com.example.festival.service.domain.type.NumberOfPeople;
 
+/**
+ * 抽選エントリ枠 Entity.
+ */
 public class LotteryEntry extends Entry {
 
   LotteryDate lotteryDate;
@@ -65,7 +68,16 @@ public class LotteryEntry extends Entry {
   }
 
   @Override
+  public boolean isLotteryEntry() {
+    return true;
+  }
+
+  @Override
   public void incrementApplicationNumbers() {
     applicationNumbers = applicationNumbers.increment();
+  }
+
+  public EntryId followingEntryId() {
+    return followingEntryId;
   }
 }

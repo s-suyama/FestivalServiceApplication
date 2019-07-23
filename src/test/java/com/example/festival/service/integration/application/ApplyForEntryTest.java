@@ -52,31 +52,6 @@ class ApplyForEntryTest {
   @BeforeEach
   void prepare() {
 
-    final Operation insertSponsors =
-        insertInto("sponsors")
-            .row()
-            .column("sponsor_id", 1)
-            .column("sponsor_name", "A食品")
-            .column("representative_name", "田中一郎")
-            .column("address", "東京都渋谷区恵比寿西１－２－３")
-            .column("phone_number", "03-1234-5678")
-            .column("email", "ichiro@example.com")
-            .end()
-            .build();
-
-    final Operation insertEventTypes =
-        insertInto("event_types")
-            .columns("event_type_code", "event_type_name")
-            .values("R01", "ランニング")
-            .values("B01", "自転車レース")
-            .build();
-
-    final Operation insertEvents =
-        insertInto("events")
-            .columns("event_code", "event_name", "event_type_code")
-            .values(1, "フルマラソン", "R01")
-            .build();
-
     final Operation insertFestivals =
         insertInto("festivals")
             .columns("festival_id", "festival_name", "sponsor_id",
@@ -208,9 +183,9 @@ class ApplyForEntryTest {
     Operation operation = sequenceOf(
         TestHelper.deleteAll,
         TestHelper.resetSequences,
-        insertSponsors,
-        insertEventTypes,
-        insertEvents,
+        TestHelper.insertSponsors,
+        TestHelper.insertEventTypes,
+        TestHelper.insertEvents,
         insertFestivals,
         insertEntries,
         insertLotteryEntries,

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.festival.service.infrastructure.member.MemberMapper">
+
+    <select id="selectMember" resultType="com.example.festival.service.domain.model.member.Member">
+        SELECT
+            member_id AS "memberId.value"
+        ,   member_name AS "memberName"
+        ,   sex AS "sex"
+        ,   birthday AS "birthday.value"
+        ,   address AS "address.value"
+        ,   phone_number AS "phoneNumber.value"
+        ,   email AS "email.value"
+        FROM
+            members
+        WHERE
+            member_id = #{memberId.value}
+    </select>
+
+</mapper>
