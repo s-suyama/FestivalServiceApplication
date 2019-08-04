@@ -38,7 +38,7 @@ CREATE TABLE conduct_services (
     conduct_service_code INT NOT NULL COMMENT '運営サービスコード'
 ,   conduct_service_name VARCHAR(50) NOT NULL COMMENT '運営サービス名'
 ,   charge_unit VARCHAR(30) NOT NULL COMMENT '課金単位'
-,   unit_price DECIMAL(10, 2) NOT NULL COMMENT '単価'
+,   unit_price DECIMAL(6) NOT NULL COMMENT '単価'
 ,   PRIMARY KEY (conduct_service_code)
 )
 COMMENT = '運営サービス'
@@ -100,7 +100,7 @@ CREATE TABLE entries (
 ,   entry_description VARCHAR(100) NOT NULL COMMENT 'エントリ枠説明'
 ,   event_code INT NOT NULL COMMENT '種目コード'
 ,   capacity INT NOT NULL COMMENT '定員'
-,   participation_fees DECIMAL(10,2) NOT NULL COMMENT '参加費用'
+,   participation_fees DECIMAL(10) NOT NULL COMMENT '参加費用'
 ,   application_numbers INT NOT NULL COMMENT '参加申込数'
 ,   first_arrival_lottery_type ENUM('firstArrival', 'lottery') NOT NULL COMMENT '先着順抽選区分'
 ,   application_start_date DATE NOT NULL COMMENT '募集開始年月日'
@@ -148,7 +148,7 @@ CREATE TABLE applications (
 ,   entry_id INT NOT NULL COMMENT 'エントリ枠番号'
 ,   application_date DATE NOT NULL COMMENT '参加申込年月日'
 ,   payment_date DATE COMMENT '入金年月日'
-,   use_points DECIMAL(10, 2) NOT NULL COMMENT '使用ポイント'
+,   use_points DECIMAL(10) NOT NULL COMMENT '使用ポイント'
 ,   PRIMARY KEY (festival_id, member_id)
 ,   CONSTRAINT fk_applications_festival_id FOREIGN KEY (festival_id) REFERENCES festivals (festival_id)
 ,   CONSTRAINT fk_applications_member_id FOREIGN KEY (member_id) REFERENCES members (member_id)
@@ -172,8 +172,8 @@ COMMENT = '抽選結果'
 CREATE TABLE member_points (
     member_id INT NOT NULL COMMENT '会員番号'
 ,   given_point_date DATE NOT NULL COMMENT 'ポイント付与年月日'
-,   given_point DECIMAL(10,2) NOT NULL COMMENT 'ポイント付与年月日'
-,   used_point DECIMAL(10,2) NOT NULL COMMENT '使用済ポイント'
+,   given_point DECIMAL(10) NOT NULL COMMENT 'ポイント付与年月日'
+,   used_point DECIMAL(10) NOT NULL COMMENT '使用済ポイント'
 ,   PRIMARY KEY (member_id, given_point_date)
 ,   CONSTRAINT fk_member_points_member_id FOREIGN KEY (member_id) REFERENCES members (member_id)
 )
