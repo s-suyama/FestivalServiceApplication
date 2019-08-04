@@ -275,7 +275,7 @@ class PayToApplicationTest {
             .row()
             .column("festival_id", 6)
             .column("member_id", 1)
-            .column("entry_id", 6)
+            .column("entry_id", 7)
             .column("application_date", LocalDate.of(2019, 9, 11))
             .column("payment_date", null)
             .column("use_points", 0)
@@ -340,7 +340,7 @@ class PayToApplicationTest {
         .rowAtEndPoint()
         .value("festival_id").isEqualTo(6)
         .value("member_id").isEqualTo(1)
-        .value("entry_id").isEqualTo(6)
+        .value("entry_id").isEqualTo(7)
         .value("application_date").isEqualTo(DateValue.of(2019, 9, 11))
         .value("payment_date").isEqualTo(DateValue.of(2019, 9, 21))
         .value("use_points").isEqualTo(50)
@@ -360,6 +360,108 @@ class PayToApplicationTest {
   void testErrorByNoApplication() throws Exception {
 
     dbSetupTracker.skipNextLaunch();
+
+    PaymentRequest request = new PaymentRequest();
+    request.setFestivalId(6);
+    request.setMemberId(1);
+    request.setPaymentDate(LocalDate.of(2019, 9, 21));
+
+    final String requestJson = objectMapper.writeValueAsString(request);
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/applications/payment")
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(requestJson))
+        .andExpect(status().isBadRequest());
+  }
+
+  @DisplayName("当選していない大会への入金がエラーになること")
+  @Test
+  void testErrorByNoWinning() throws Exception {
+
+    final Operation insertApplications =
+        insertInto("applications")
+            .row()
+            .column("festival_id", 6)
+            .column("member_id", 1)
+            .column("entry_id", 8)
+            .column("application_date", LocalDate.of(2019, 9, 11))
+            .column("payment_date", null)
+            .column("use_points", 0)
+            .end()
+            .build();
+
+    final Operation insertLotteryEntryResults =
+        insertInto("lottery_entry_results")
+            .row()
+            .column("festival_id", 6)
+            .column("member_id", 1)
+            .column("entry_id", 8)
+            .column("lottery_result", "failed")
+            .end()
+            .build();
+
+    Operation operation = sequenceOf(
+        insertApplications,
+        insertLotteryEntryResults);
+
+    Destination dest = new DataSourceDestination(dataSource);
+    DbSetup dbSetup = new DbSetup(dest, operation);
+    dbSetupTracker.launchIfNecessary(dbSetup);
+
+    PaymentRequest request = new PaymentRequest();
+    request.setFestivalId(6);
+    request.setMemberId(1);
+    request.setPaymentDate(LocalDate.of(2019, 9, 21));
+
+    final String requestJson = objectMapper.writeValueAsString(request);
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/applications/payment")
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(requestJson))
+        .andExpect(status().isBadRequest());
+  }
+
+  @DisplayName("申し込んだ抽選にも、多段階抽選にも当選していない大会への入金がえらーになること")
+  @Test
+  void testErrorByNoWinning2() throws Exception {
+
+    final Operation insertApplications =
+        insertInto("applications")
+            .row()
+            .column("festival_id", 6)
+            .column("member_id", 1)
+            .column("entry_id", 7)
+            .column("application_date", LocalDate.of(2019, 9, 11))
+            .column("payment_date", null)
+            .column("use_points", 0)
+            .end()
+            .build();
+
+    final Operation insertLotteryEntryResults =
+        insertInto("lottery_entry_results")
+            .row()
+            .column("festival_id", 6)
+            .column("member_id", 1)
+            .column("entry_id", 7)
+            .column("lottery_result", "failed")
+            .end()
+            .row()
+            .column("festival_id", 6)
+            .column("member_id", 1)
+            .column("entry_id", 8)
+            .column("lottery_result", "failed")
+            .end()
+            .build();
+
+    Operation operation = sequenceOf(
+        insertApplications,
+        insertLotteryEntryResults);
+
+    Destination dest = new DataSourceDestination(dataSource);
+    DbSetup dbSetup = new DbSetup(dest, operation);
+    dbSetupTracker.launchIfNecessary(dbSetup);
 
     PaymentRequest request = new PaymentRequest();
     request.setFestivalId(6);
