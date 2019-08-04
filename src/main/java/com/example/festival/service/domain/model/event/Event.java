@@ -1,9 +1,11 @@
 package com.example.festival.service.domain.model.event;
 
+import com.example.festival.service.domain.Entity;
+
 /**
- * 種目 Entity.
+ * 種目.
  */
-public class Event {
+public class Event implements Entity {
 
   EventCode eventCode;
 

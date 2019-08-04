@@ -1,5 +1,6 @@
 package com.example.festival.service.domain.model.entry;
 
+import com.example.festival.service.domain.Entity;
 import com.example.festival.service.domain.model.event.EventCode;
 import com.example.festival.service.domain.model.festival.FestivalId;
 import com.example.festival.service.domain.type.Amount;
@@ -8,9 +9,9 @@ import com.example.festival.service.domain.type.NumberOfPeople;
 import java.time.LocalDate;
 
 /**
- * 先着順エントリ枠 Entity.
+ * 先着順エントリ枠.
  */
-public class FirstArrivalEntry extends Entry {
+public class FirstArrivalEntry extends Entry implements Entity {
 
   private FirstArrivalEntry() {
     super();

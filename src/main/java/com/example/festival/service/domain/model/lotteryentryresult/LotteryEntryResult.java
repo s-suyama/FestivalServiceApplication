@@ -1,10 +1,14 @@
 package com.example.festival.service.domain.model.lotteryentryresult;
 
+import com.example.festival.service.domain.Entity;
 import com.example.festival.service.domain.model.entry.EntryId;
 import com.example.festival.service.domain.model.festival.FestivalId;
 import com.example.festival.service.domain.model.member.MemberId;
 
-public class LotteryEntryResult {
+/**
+ * 抽選結果.
+ */
+public class LotteryEntryResult implements Entity {
 
   FestivalId festivalId;
 

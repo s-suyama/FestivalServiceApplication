@@ -1,12 +1,16 @@
 package com.example.festival.service.domain.model.application;
 
+import com.example.festival.service.domain.Entity;
 import com.example.festival.service.domain.type.PointAmount;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Payment {
+/**
+ * 入金.
+ */
+public class Payment implements Entity {
 
   LocalDate paymentDate;
 

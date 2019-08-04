@@ -1,5 +1,6 @@
 package com.example.festival.service.domain.model.entry;
 
+import com.example.festival.service.domain.Entity;
 import com.example.festival.service.domain.model.event.EventCode;
 import com.example.festival.service.domain.model.festival.FestivalId;
 import com.example.festival.service.domain.type.Amount;
@@ -8,9 +9,9 @@ import com.example.festival.service.domain.type.NumberOfPeople;
 import java.time.LocalDate;
 
 /**
- * 抽選エントリ枠 Entity.
+ * 抽選エントリ枠.
  */
-public class LotteryEntry extends Entry {
+public class LotteryEntry extends Entry implements Entity {
 
   LocalDate lotteryDate;
 

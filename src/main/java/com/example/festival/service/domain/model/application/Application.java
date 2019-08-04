@@ -1,5 +1,6 @@
 package com.example.festival.service.domain.model.application;
 
+import com.example.festival.service.domain.Entity;
 import com.example.festival.service.domain.model.entry.EntryId;
 import com.example.festival.service.domain.model.festival.FestivalId;
 import com.example.festival.service.domain.model.member.MemberId;
@@ -7,9 +8,9 @@ import com.example.festival.service.domain.type.PointAmount;
 import java.time.LocalDate;
 
 /**
- * 参加申込 Entity.
+ * 参加申込.
  */
-public class Application {
+public class Application implements Entity {
 
   FestivalId festivalId;
 

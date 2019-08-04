@@ -1,13 +1,14 @@
 package com.example.festival.service.domain.model.sponsor;
 
+import com.example.festival.service.domain.Entity;
 import com.example.festival.service.domain.type.Address;
 import com.example.festival.service.domain.type.Email;
 import com.example.festival.service.domain.type.PhoneNumber;
 
 /**
- * 主催者 Entity.
+ * 主催者.
  */
-public class Sponsor {
+public class Sponsor implements Entity {
 
   SponsorId sponsorId;
 

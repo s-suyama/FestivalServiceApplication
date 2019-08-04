@@ -1,5 +1,6 @@
 package com.example.festival.service.domain.model.entry;
 
+import com.example.festival.service.domain.Entity;
 import com.example.festival.service.domain.model.application.Application;
 import com.example.festival.service.domain.model.event.EventCode;
 import com.example.festival.service.domain.model.festival.FestivalId;
@@ -10,9 +11,9 @@ import com.example.festival.service.support.BusinessErrorException;
 import java.time.LocalDate;
 
 /**
- * エントリ枠 Entity.
+ * エントリ枠.
  */
-public abstract class Entry {
+public abstract class Entry implements Entity {
 
   FestivalId festivalId;
 

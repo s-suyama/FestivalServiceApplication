@@ -1,13 +1,14 @@
 package com.example.festival.service.domain.model.festival;
 
+import com.example.festival.service.domain.Entity;
 import com.example.festival.service.domain.model.sponsor.Sponsor;
 
 import java.time.LocalDate;
 
 /**
- * 大会 Entity.
+ * 大会.
  */
-public class Festival {
+public class Festival implements Entity {
 
   FestivalId festivalId;
 

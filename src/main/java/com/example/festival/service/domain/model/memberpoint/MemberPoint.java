@@ -1,11 +1,12 @@
 package com.example.festival.service.domain.model.memberpoint;
 
+import com.example.festival.service.domain.Entity;
 import com.example.festival.service.domain.model.member.MemberId;
 import com.example.festival.service.domain.type.PointAmount;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class MemberPoint {
+public class MemberPoint implements Entity {
 
   private MemberId memberId;
 
