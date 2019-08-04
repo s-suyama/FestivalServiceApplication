@@ -212,11 +212,11 @@ class PayToApplicationTest {
     dbSetupTracker.launchIfNecessary(dbSetup);
   }
 
-  @DisplayName("先着枠の申込への支払いができること")
+  @DisplayName("ポイント利用なしで先着枠の申込への支払いができること")
   @Test
   void testPayToFirstArrivalEntry() throws Exception {
 
-    final Operation insertApplication =
+    final Operation insertApplications =
         insertInto("applications")
             .row()
             .column("festival_id", 6)
@@ -229,7 +229,7 @@ class PayToApplicationTest {
             .build();
 
     Destination dest = new DataSourceDestination(dataSource);
-    DbSetup dbSetup = new DbSetup(dest, insertApplication);
+    DbSetup dbSetup = new DbSetup(dest, insertApplications);
     dbSetupTracker.launchIfNecessary(dbSetup);
 
     PaymentRequest request = new PaymentRequest();
@@ -264,5 +264,94 @@ class PayToApplicationTest {
         .value("application_date").isEqualTo(DateValue.of(2019, 9, 11))
         .value("payment_date").isEqualTo(DateValue.of(2019, 9, 21))
         .value("use_points").isEqualTo(0);
+  }
+
+  @DisplayName("ポイント利用ありで抽選枠の申込への支払いができること")
+  @Test
+  void testPayToLotteryEntryUsePoint() throws Exception {
+
+    final Operation insertApplications =
+        insertInto("applications")
+            .row()
+            .column("festival_id", 6)
+            .column("member_id", 1)
+            .column("entry_id", 6)
+            .column("application_date", LocalDate.of(2019, 9, 11))
+            .column("payment_date", null)
+            .column("use_points", 0)
+            .end()
+            .build();
+
+    final Operation insertLotteryEntryResults =
+        insertInto("lottery_entry_results")
+            .row()
+            .column("festival_id", 6)
+            .column("member_id", 1)
+            .column("entry_id", 7)
+            .column("lottery_result", "winning")
+            .end()
+            .build();
+
+    final Operation insertMemberPoints =
+        insertInto("member_points")
+            .row()
+            .column("member_id", 1)
+            .column("given_point_date", LocalDate.of(2019, 4, 25))
+            .column("given_point", 100)
+            .column("used_point", 0)
+            .end()
+            .build();
+
+    Operation operation = sequenceOf(
+        insertApplications,
+        insertLotteryEntryResults,
+        insertMemberPoints);
+
+    Destination dest = new DataSourceDestination(dataSource);
+    DbSetup dbSetup = new DbSetup(dest, operation);
+    dbSetupTracker.launchIfNecessary(dbSetup);
+
+    PaymentRequest request = new PaymentRequest();
+    request.setFestivalId(6);
+    request.setMemberId(1);
+    request.setPaymentDate(LocalDate.of(2019, 9, 21));
+    request.setUsePoints(BigDecimal.valueOf(50));
+
+    final String requestJson = objectMapper.writeValueAsString(request);
+
+    Changes changes = new Changes(dataSource);
+    changes.setStartPointNow();
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/applications/payment")
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(requestJson))
+        .andExpect(status().isOk());
+
+    changes.setEndPointNow();
+
+    assertThat(changes)
+        .hasNumberOfChanges(2)
+        .changeOnTable("applications")
+        .isModification()
+        .rowAtStartPoint()
+        .value("payment_date").isNull()
+        .value("use_points").isEqualTo(0)
+        .rowAtEndPoint()
+        .value("festival_id").isEqualTo(6)
+        .value("member_id").isEqualTo(1)
+        .value("entry_id").isEqualTo(6)
+        .value("application_date").isEqualTo(DateValue.of(2019, 9, 11))
+        .value("payment_date").isEqualTo(DateValue.of(2019, 9, 21))
+        .value("use_points").isEqualTo(50)
+        .changeOnTable("member_points")
+        .isModification()
+        .rowAtStartPoint()
+        .value("used_point").isEqualTo(BigDecimal.ZERO)
+        .rowAtEndPoint()
+        .value("member_id").isEqualTo(1)
+        .value("given_point_date").isEqualTo(DateValue.of(2019, 4, 25))
+        .value("given_point").isEqualTo(100)
+        .value("used_point").isEqualTo(50);
   }
 }

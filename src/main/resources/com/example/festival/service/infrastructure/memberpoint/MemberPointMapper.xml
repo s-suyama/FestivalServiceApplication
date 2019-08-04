@@ -16,7 +16,7 @@
             member_id = #{memberId.value}
     </select>
 
-    <select id="selectCount">
+    <select id="selectCount" resultType="int">
         SELECT
             COUNT (*)
         FROM

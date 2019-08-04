@@ -68,14 +68,14 @@ public class PaymentCommandService {
       if (entryResult.lotteryResult() == LotteryResult.failed) {
         EntryId followingEntryId = ((LotteryEntry)entry).followingEntryId();
         if (followingEntryId == null) {
-          throw new BusinessErrorException("対象の大会には当選していませｎ");
+          throw new BusinessErrorException("対象の大会には当選していません");
         } else {
           LotteryEntryResult followingEntryResult =
               lotteryEntryResultRepository.findLotteryEntryResult(
                   festivalId, memberId, followingEntryId);
 
           if (followingEntryResult.lotteryResult() == LotteryResult.failed) {
-            throw new BusinessErrorException("対象の大会には当選していませｎ");
+            throw new BusinessErrorException("対象の大会には当選していません");
           }
         }
       }
