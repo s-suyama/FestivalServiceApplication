@@ -354,4 +354,24 @@ class PayToApplicationTest {
         .value("given_point").isEqualTo(100)
         .value("used_point").isEqualTo(50);
   }
+
+  @DisplayName("申込を行っていない大会への入金がエラーになること")
+  @Test
+  void testErrorByNoApplication() throws Exception {
+
+    dbSetupTracker.skipNextLaunch();
+
+    PaymentRequest request = new PaymentRequest();
+    request.setFestivalId(6);
+    request.setMemberId(1);
+    request.setPaymentDate(LocalDate.of(2019, 9, 21));
+
+    final String requestJson = objectMapper.writeValueAsString(request);
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/applications/payment")
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(requestJson))
+        .andExpect(status().isBadRequest());
+  }
 }
