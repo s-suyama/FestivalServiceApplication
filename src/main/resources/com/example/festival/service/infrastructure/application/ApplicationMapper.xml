@@ -10,8 +10,8 @@
         ,   member_id AS "memberId.value"
         ,   entry_id AS "entryId.value"
         ,   application_date AS "applicationDate"
-        ,   payment_date AS "paymentDate"
-        ,   use_points AS "usePoints.value"
+        ,   payment_date AS "payment.paymentDate"
+        ,   use_points AS "payment.usePoints.value"
         FROM
             applications
         WHERE
@@ -33,8 +33,8 @@
         ,   #{memberId.value}
         ,   #{entryId.value}
         ,   #{applicationDate}
-        ,   #{paymentDate}
-        ,   #{usePoints.value}
+        ,   #{payment.paymentDate}
+        ,   #{payment.usePoints.value}
         )
     </insert>
 

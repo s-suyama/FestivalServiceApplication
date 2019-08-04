@@ -4,8 +4,6 @@ import com.example.festival.service.domain.model.entry.EntryId;
 import com.example.festival.service.domain.model.festival.FestivalId;
 import com.example.festival.service.domain.model.member.MemberId;
 import com.example.festival.service.domain.type.PointAmount;
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -21,9 +19,7 @@ public class Application {
 
   LocalDate applicationDate;
 
-  LocalDate paymentDate;
-
-  PointAmount usePoints;
+  Payment payment;
 
   private Application() {
   }
@@ -42,8 +38,7 @@ public class Application {
     result.memberId = memberId;
     result.entryId = entryId;
     result.applicationDate = applicationDate;
-    result.paymentDate = null;
-    result.usePoints = new PointAmount(BigDecimal.ZERO);
+    result.payment = Payment.createUnpaid();
 
     return result;
   }
@@ -64,11 +59,12 @@ public class Application {
     return applicationDate;
   }
 
-  public LocalDate paymentDate() {
-    return paymentDate;
+  public Payment payment() {
+    return payment;
   }
 
-  public PointAmount usePoints() {
-    return usePoints;
+  public void pay(LocalDate paymentDate, PointAmount usePoints) {
+    payment.paymentDate = paymentDate;
+    payment.usePoints = usePoints;
   }
 }
