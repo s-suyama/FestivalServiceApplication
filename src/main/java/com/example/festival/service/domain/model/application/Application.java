@@ -63,6 +63,9 @@ public class Application {
     return payment;
   }
 
+  /**
+   * 入金する.
+   */
   public void pay(LocalDate paymentDate, PointAmount usePoints) {
     payment.paymentDate = paymentDate;
     payment.usePoints = usePoints;

@@ -14,4 +14,6 @@ public interface ApplicationMapper {
       @Param("memberId") MemberId memberId);
 
   int insertApplication(Application application);
+
+  int updateApplication(Application application);
 }

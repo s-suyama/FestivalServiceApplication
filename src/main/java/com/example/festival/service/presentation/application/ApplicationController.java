@@ -2,6 +2,8 @@ package com.example.festival.service.presentation.application;
 
 import com.example.festival.service.application.application.ApplicationCommandService;
 import com.example.festival.service.application.application.ApplyForEntryRequest;
+import com.example.festival.service.application.payment.PaymentCommandService;
+import com.example.festival.service.application.payment.PaymentRequest;
 import com.example.festival.service.support.ValidationErrorException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,11 +19,17 @@ public class ApplicationController {
 
   private final ApplicationCommandService applicationCommandService;
 
+  private final PaymentCommandService paymentCommandService;
+
   /**
    * Constructor.
    */
-  public ApplicationController(ApplicationCommandService applicationCommandService) {
+  public ApplicationController(
+      ApplicationCommandService applicationCommandService,
+      PaymentCommandService paymentCommandService) {
+
     this.applicationCommandService = applicationCommandService;
+    this.paymentCommandService = paymentCommandService;
   }
 
   /**
@@ -38,6 +46,24 @@ public class ApplicationController {
     }
 
     applicationCommandService.applyForEntry(request);
+
+    return new ResponseEntity<>(null, HttpStatus.OK);
+  }
+
+  /**
+   * 入金する.
+   */
+  @PostMapping(value = "/applications/payment",
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Object> payToApplication(
+      @RequestBody @Validated PaymentRequest request, Errors errors) {
+
+    if (errors.hasErrors()) {
+      throw new ValidationErrorException(errors);
+    }
+
+    paymentCommandService.payToApplication(request);
 
     return new ResponseEntity<>(null, HttpStatus.OK);
   }

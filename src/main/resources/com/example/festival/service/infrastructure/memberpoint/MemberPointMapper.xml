@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.festival.service.infrastructure.memberpoint.MemberPointMapper">
+
+    <select id="selectMemberPointList" resultType="com.example.festival.service.domain.model.memberpoint.MemberPoint">
+        SELECT
+            member_id AS "memberId.value"
+        ,   given_point_date AS "givenPointDate"
+        ,   given_point AS "givenPoint.value"
+        ,   used_point AS "usedPoint.value"
+        FROM
+            member_points
+        WHERE
+            member_id = #{memberId.value}
+    </select>
+
+    <select id="selectCount">
+        SELECT
+            COUNT (*)
+        FROM
+            member_points
+        WHERE
+            member_id = #{memberId.value}
+    </select>
+
+    <insert id="insertMemberPoint" parameterType="com.example.festival.service.domain.model.memberpoint.MemberPoint">
+        INSERT INTO member_points (
+            member_id
+        ,   given_point_date
+        ,   given_point
+        ,   used_point
+        )
+        VALUES (
+            #{memberId.value}
+        ,   #{givenPointDate}
+        ,   #{givenPoint.value}
+        ,   #{usedPoint.value}
+        )
+    </insert>
+
+    <delete id="deleteMemberPoints">
+        DELETE
+        FROM
+            member_points
+        WHERE
+            member_id = #{memberId.value}
+    </delete>
+
+</mapper>

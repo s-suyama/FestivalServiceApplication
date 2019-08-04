@@ -38,4 +38,18 @@
         )
     </insert>
 
+    <update id="updateApplication" parameterType="com.example.festival.service.domain.model.application.Application">
+        UPDATE applications
+        SET
+            festival_id = #{festivalId.value}
+        ,   member_id = #{memberId.value}
+        ,   entry_id = #{entryId.value}
+        ,   application_date = #{applicationDate}
+        ,   payment_date = #{payment.paymentDate}
+        ,   use_points = #{payment.usePoints.value}
+        WHERE
+            festival_id = #{festivalId.value}
+        AND member_id = #{memberId.value}
+    </update>
+
 </mapper>

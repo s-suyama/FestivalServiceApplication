@@ -8,4 +8,6 @@ public interface ApplicationRepository {
   Application findApplication(FestivalId festivalId, MemberId memberId);
 
   void addApplication(Application application);
+
+  void saveApplication(Application application);
 }

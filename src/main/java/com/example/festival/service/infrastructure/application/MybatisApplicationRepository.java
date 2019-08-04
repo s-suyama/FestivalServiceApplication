@@ -32,4 +32,13 @@ public class MybatisApplicationRepository implements ApplicationRepository {
       throw new IllegalStateException("applications への insert が失敗しました");
     }
   }
+
+  @Override
+  public void saveApplication(Application application) {
+
+    int cnt = applicationMapper.updateApplication(application);
+    if (cnt != 1) {
+      throw new IllegalStateException("applications への update が失敗しました");
+    }
+  }
 }

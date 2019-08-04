@@ -37,4 +37,8 @@ public class PointAmount implements ValueObject {
   public BigDecimal value() {
     return value;
   }
+
+  public boolean isPositive() {
+    return value.compareTo(BigDecimal.ZERO) > 0;
+  }
 }
