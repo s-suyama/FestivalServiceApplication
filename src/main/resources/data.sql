@@ -281,19 +281,29 @@ ALTER SEQUENCE member_id RESTART WITH 5
 
 INSERT INTO member_points (
     member_id
-,   balance
+,   given_point_date
+,   given_point
+,   used_point
 )
 VALUES (
     1
+,   '2018-09-01'
 ,   100
+,   0
 ),(
     2
+,   '2018-09-01'
 ,   200
+,   0
 ),(
     3
+,   '2018-09-01'
 ,   300
+,   0
 ),(
     4
+,   '2018-09-01'
 ,   400
+,   0
 )
 ;

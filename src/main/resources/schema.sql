@@ -171,8 +171,10 @@ COMMENT = '抽選結果'
 
 CREATE TABLE member_points (
     member_id INT NOT NULL COMMENT '会員番号'
-,   balance DECIMAL(10,2) NOT NULL COMMENT 'ポイント残高'
-,   PRIMARY KEY (member_id)
+,   given_point_date DATE NOT NULL COMMENT 'ポイント付与年月日'
+,   given_point DECIMAL(10,2) NOT NULL COMMENT 'ポイント付与年月日'
+,   used_point DECIMAL(10,2) NOT NULL COMMENT '使用済ポイント'
+,   PRIMARY KEY (member_id, given_point_date)
 ,   CONSTRAINT fk_member_points_member_id FOREIGN KEY (member_id) REFERENCES members (member_id)
 )
 COMMENT = '会員ポイント'
