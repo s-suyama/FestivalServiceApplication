@@ -476,4 +476,106 @@ class PayToApplicationTest {
         .content(requestJson))
         .andExpect(status().isBadRequest());
   }
+
+  @DisplayName("複数のポイント履歴を使用する入金が行えること")
+  @Test
+  void testPayMultiUsePoint() throws Exception {
+
+    final Operation insertApplications =
+        insertInto("applications")
+            .row()
+            .column("festival_id", 6)
+            .column("member_id", 1)
+            .column("entry_id", 6)
+            .column("application_date", LocalDate.of(2019, 9, 11))
+            .column("payment_date", null)
+            .column("use_points", 0)
+            .end()
+            .build();
+
+    final Operation insertMemberPoints =
+        insertInto("member_points")
+            .row()
+            .column("member_id", 1)
+            .column("given_point_date", LocalDate.of(2019, 4, 25))
+            .column("given_point", 100)
+            .column("used_point", 0)
+            .end()
+            .row()
+            .column("member_id", 1)
+            .column("given_point_date", LocalDate.of(2019, 4, 26))
+            .column("given_point", 150)
+            .column("used_point", 0)
+            .end()
+            .row()
+            .column("member_id", 1)
+            .column("given_point_date", LocalDate.of(2019, 4, 27))
+            .column("given_point", 200)
+            .column("used_point", 0)
+            .end()
+            .build();
+
+    Operation operation = sequenceOf(
+        insertApplications,
+        insertMemberPoints);
+
+    Destination dest = new DataSourceDestination(dataSource);
+    DbSetup dbSetup = new DbSetup(dest, operation);
+    dbSetupTracker.launchIfNecessary(dbSetup);
+
+    PaymentRequest request = new PaymentRequest();
+    request.setFestivalId(6);
+    request.setMemberId(1);
+    request.setPaymentDate(LocalDate.of(2019, 9, 21));
+    request.setUsePoints(BigDecimal.valueOf(251));
+
+    final String requestJson = objectMapper.writeValueAsString(request);
+
+    Changes changes = new Changes(dataSource);
+    changes.setStartPointNow();
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/applications/payment")
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(requestJson))
+        .andExpect(status().isOk());
+
+    changes.setEndPointNow();
+
+    assertThat(changes)
+        .hasNumberOfChanges(4)
+        .changeOnTable("applications")
+        .isModification()
+        .rowAtEndPoint()
+        .value("festival_id").isEqualTo(6)
+        .value("member_id").isEqualTo(1)
+        .value("entry_id").isEqualTo(6)
+        .value("application_date").isEqualTo(DateValue.of(2019, 9, 11))
+        .value("payment_date").isEqualTo(DateValue.of(2019, 9, 21))
+        .value("use_points").isEqualTo(251)
+        .changeOfModificationOnTable("member_points", 0)
+        .rowAtStartPoint()
+        .value("used_point").isEqualTo(0)
+        .rowAtEndPoint()
+        .value("member_id").isEqualTo(1)
+        .value("given_point_date").isEqualTo(DateValue.of(2019, 4, 25))
+        .value("given_point").isEqualTo(100)
+        .value("used_point").isEqualTo(100)
+        .changeOfModificationOnTable("member_points", 1)
+        .rowAtStartPoint()
+        .value("used_point").isEqualTo(0)
+        .rowAtEndPoint()
+        .value("member_id").isEqualTo(1)
+        .value("given_point_date").isEqualTo(DateValue.of(2019, 4, 26))
+        .value("given_point").isEqualTo(150)
+        .value("used_point").isEqualTo(150)
+        .changeOfModificationOnTable("member_points", 2)
+        .rowAtStartPoint()
+        .value("used_point").isEqualTo(0)
+        .rowAtEndPoint()
+        .value("member_id").isEqualTo(1)
+        .value("given_point_date").isEqualTo(DateValue.of(2019, 4, 27))
+        .value("given_point").isEqualTo(200)
+        .value("used_point").isEqualTo(1);
+  }
 }
