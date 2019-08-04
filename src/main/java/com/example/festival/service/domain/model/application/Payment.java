@@ -24,12 +24,6 @@ public class Payment {
       throw new IllegalArgumentException("支払日は必須です");
     }
 
-    if (usePoints != null) {
-      if (usePoints.value().compareTo(BigDecimal.ZERO) < 0) {
-        throw new IllegalArgumentException("使用ポイントにマイナスのポイント数は指定できません");
-      }
-    }
-
     this.paymentDate = paymentDate;
     this.usePoints =
         Objects.requireNonNullElseGet(usePoints, () -> new PointAmount(BigDecimal.ZERO));
