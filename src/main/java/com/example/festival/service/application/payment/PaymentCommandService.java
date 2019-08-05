@@ -83,11 +83,10 @@ public class PaymentCommandService {
 
     PointAmount usePoints = new PointAmount(request.getUsePoints());
     if (usePoints.isPositive()) {
-      MemberPoints beforeMemberPoints = memberPointRepository.findMemberPoints(memberId);
-      MemberPoints afterMemberPoints =
-          beforeMemberPoints.usePoints(request.getPaymentDate(), usePoints);
+      MemberPoints memberPoints = memberPointRepository.findMemberPoints(memberId);
+      memberPoints.usePoints(request.getPaymentDate(), usePoints);
 
-      memberPointRepository.saveMemberPoints(afterMemberPoints);
+      memberPointRepository.saveMemberPoints(memberPoints);
     }
 
     application.pay(request.getPaymentDate(), usePoints);

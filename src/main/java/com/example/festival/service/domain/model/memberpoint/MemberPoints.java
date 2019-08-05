@@ -27,10 +27,10 @@ public class MemberPoints {
   }
 
   /**
-   * 引数のポイントが使えるかどうかを判定し、使用できる場合、使用後のポイントを返す.
-   * @return ポイント使用後の MemberPoints オブジェクト
+   * 引数のポイントが使えるかどうかを判定し、有効期限の近いポイントから使用する.
+   * なお、保持する MemberPoint オブジェクトの状態を変更する。
    */
-  public MemberPoints usePoints(LocalDate paymentDate, PointAmount pointAmount) {
+  public void usePoints(LocalDate paymentDate, PointAmount pointAmount) {
 
     // この値がゼロになるまでこれまで付与されたポイントからポイントを使用していく
     BigDecimal x = pointAmount.value();
@@ -64,8 +64,6 @@ public class MemberPoints {
     if (x.compareTo(BigDecimal.ZERO) > 0) {
       throw new BusinessErrorException("ポイント数が不足しています");
     }
-
-    return this;
   }
 
   /**
