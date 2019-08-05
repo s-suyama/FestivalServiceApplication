@@ -3,6 +3,9 @@ package com.example.festival.service.integration.application;
 import static com.ninja_squad.dbsetup.Operations.insertInto;
 import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import static org.assertj.db.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.example.festival.service.application.payment.PaymentRequest;
@@ -577,5 +580,25 @@ class PayToApplicationTest {
         .value("given_point_date").isEqualTo(DateValue.of(2019, 4, 27))
         .value("given_point").isEqualTo(200)
         .value("used_point").isEqualTo(1);
+  }
+
+  @DisplayName("バリデーションエラーになること")
+  @Test
+  void testValidationError() throws Exception {
+
+    dbSetupTracker.skipNextLaunch();
+
+    PaymentRequest request = new PaymentRequest();
+
+    final String requestJson = objectMapper.writeValueAsString(request);
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/applications/payment")
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(requestJson))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("入力内容にエラーがあります")))
+        .andExpect(jsonPath("$.details").isArray())
+        .andExpect(jsonPath("$.details", hasSize(3)));
   }
 }
