@@ -504,4 +504,48 @@ class ApplyForEntryTest {
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is("指定した大会の募集期間を過ぎています")));
   }
+
+  @DisplayName("存在しない会員の申込がエラーになること")
+  @Test
+  void testNoMemberError() throws Exception {
+
+    dbSetupTracker.skipNextLaunch();
+
+    ApplyForEntryRequest request = new ApplyForEntryRequest();
+    request.setFestivalId(2);
+    request.setEntryId(5);
+    request.setMemberId(4);
+    request.setApplicationDate(LocalDate.of(2019, 10, 12));
+
+    final String requestJson = objectMapper.writeValueAsString(request);
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/applications/entry")
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(requestJson))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("存在しない会員です")));
+  }
+
+  @DisplayName("存在しないエントリ枠の申込がエラーになること")
+  @Test
+  void testNoEntry() throws Exception {
+
+    dbSetupTracker.skipNextLaunch();
+
+    ApplyForEntryRequest request = new ApplyForEntryRequest();
+    request.setFestivalId(1);
+    request.setEntryId(10);
+    request.setMemberId(1);
+    request.setApplicationDate(LocalDate.of(2019, 9, 12));
+
+    final String requestJson = objectMapper.writeValueAsString(request);
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/applications/entry")
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(requestJson))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("存在しないエントリ枠です")));
+  }
 }
