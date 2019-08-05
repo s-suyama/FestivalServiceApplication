@@ -78,6 +78,37 @@ class MemberPointsTest {
     );
   }
 
+  @DisplayName("使用済みのポイントが存在する場合に、未使用のポイントを使えること")
+  @Test
+  void test3() {
+
+    List<MemberPoint> memberPointList = new ArrayList<>();
+
+    memberPointList.add(
+        fixture(1, LocalDate.of(2018, 3, 31), BigDecimal.valueOf(10), BigDecimal.valueOf(10))
+    );
+    memberPointList.add(
+        fixture(1, LocalDate.of(2018, 4, 1), BigDecimal.valueOf(20), BigDecimal.valueOf(5))
+    );
+    memberPointList.add(
+        fixture(1, LocalDate.of(2018, 4, 2), BigDecimal.valueOf(30), BigDecimal.ZERO)
+    );
+
+    MemberPoints memberPoints = new MemberPoints(memberPointList);
+    memberPoints.usePoints(LocalDate.of(2018, 10, 1), new PointAmount(BigDecimal.valueOf(30)));
+
+    List<MemberPoint> afterUseMemberPointList = memberPoints.list();
+
+    assertAll("memberPoints",
+        () -> assertEquals(BigDecimal.valueOf(10),
+            afterUseMemberPointList.get(0).usedPoint().value()),
+        () -> assertEquals(BigDecimal.valueOf(20),
+            afterUseMemberPointList.get(1).usedPoint().value()),
+        () -> assertEquals(BigDecimal.valueOf(15),
+            afterUseMemberPointList.get(2).usedPoint().value())
+    );
+  }
+
   @DisplayName("ポイントが不足している場合エラーになること")
   @Test
   void testError1() {
