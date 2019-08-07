@@ -24,6 +24,20 @@ public class NumberOfPeople implements ValueObject {
     return new NumberOfPeople(value + 1);
   }
 
+  /**
+   * 同じ人数かどうかを返す.
+   */
+  public boolean same(NumberOfPeople other) {
+    if (this == other) {
+      return true;
+    }
+    if (other == null) {
+      return false;
+    }
+
+    return value == other.value;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

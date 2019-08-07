@@ -72,7 +72,7 @@ public class FirstArrivalEntry extends Entry implements Entity {
   public void incrementApplicationNumbers() {
     applicationNumbers = applicationNumbers.increment();
 
-    if (capacity.value() == applicationNumbers.value()) {
+    if (capacity.same(applicationNumbers)) {
       entryStatus = EntryStatus.participantConfirmation;
     }
   }
