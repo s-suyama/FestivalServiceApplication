@@ -479,8 +479,7 @@ class ApplyForEntryTest {
         .accept(MediaType.APPLICATION_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .content(requestJson))
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("指定した大会はまだ募集を開始していません")));
+        .andExpect(status().isInternalServerError());
   }
 
   @DisplayName("募集終了日を過ぎている場合エラーになること")
@@ -501,8 +500,7 @@ class ApplyForEntryTest {
         .accept(MediaType.APPLICATION_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .content(requestJson))
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("指定した大会の募集期間を過ぎています")));
+        .andExpect(status().isInternalServerError());
   }
 
   @DisplayName("存在しない会員の申込がエラーになること")

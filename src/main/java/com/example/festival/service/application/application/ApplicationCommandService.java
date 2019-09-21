@@ -3,7 +3,9 @@ package com.example.festival.service.application.application;
 import com.example.festival.service.domain.model.application.Application;
 import com.example.festival.service.domain.model.application.ApplicationRepository;
 import com.example.festival.service.domain.model.application.ApplicationService;
+import com.example.festival.service.domain.model.application.EntryStatusIsNotRecruitingException;
 import com.example.festival.service.domain.model.application.FestivalApplicationPolicy;
+import com.example.festival.service.domain.model.application.HasAlreadyApplyForSameFestivalException;
 import com.example.festival.service.domain.model.entry.Entry;
 import com.example.festival.service.domain.model.entry.EntryId;
 import com.example.festival.service.domain.model.entry.EntryRepository;
@@ -66,7 +68,14 @@ public class ApplicationCommandService {
     final ApplicationService applicationService =
         new ApplicationService(entry, festivalApplicationPolicy);
 
-    final Application application = applicationService.createApplication(memberId, applicationDate);
+    final Application application;
+    try {
+      application = applicationService.createApplication(memberId, applicationDate);
+    } catch (EntryStatusIsNotRecruitingException e) {
+      throw new BusinessErrorException("指定した大会は現在募集を行っておりません");
+    } catch (HasAlreadyApplyForSameFestivalException e) {
+      throw new BusinessErrorException("指定した大会には既に申し込み済みです");
+    }
 
     entry.incrementApplicationNumbers();
     entryRepository.saveEntry(entry);

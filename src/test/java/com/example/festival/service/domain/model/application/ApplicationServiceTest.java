@@ -14,7 +14,6 @@ import com.example.festival.service.domain.model.festival.FestivalId;
 import com.example.festival.service.domain.model.member.MemberId;
 import com.example.festival.service.domain.type.Amount;
 import com.example.festival.service.domain.type.NumberOfPeople;
-import com.example.festival.service.support.BusinessErrorException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,7 +25,8 @@ class ApplicationServiceTest {
 
   @DisplayName("参加申込オブジェクトを生成して返すこと")
   @Test
-  void testSuccess() {
+  void testSuccess()
+      throws EntryStatusIsNotRecruitingException, HasAlreadyApplyForSameFestivalException {
 
     FestivalId festivalId = new FestivalId(1);
     EntryId entryId = new EntryId(2);
@@ -56,7 +56,7 @@ class ApplicationServiceTest {
     );
   }
 
-  @DisplayName("募集開始前の申込時に業務例外を throw すること")
+  @DisplayName("募集開始前の申込時に例外を throw すること")
   @Test
   void testBusinessError1() {
 
@@ -77,11 +77,11 @@ class ApplicationServiceTest {
     ApplicationService applicationService = new ApplicationService(
         entry, festivalApplicationPolicy);
 
-    assertThrows(BusinessErrorException.class, () ->
+    assertThrows(IllegalStateException.class, () ->
         applicationService.createApplication(memberId, LocalDate.of(2019, 3, 30)));
   }
 
-  @DisplayName("募集終了日より後の申込時に業務例外を throw すること")
+  @DisplayName("募集終了日より後の申込時に例外を throw すること")
   @Test
   void testBusinessError2() {
 
@@ -102,7 +102,7 @@ class ApplicationServiceTest {
     ApplicationService applicationService = new ApplicationService(
         entry, festivalApplicationPolicy);
 
-    assertThrows(BusinessErrorException.class, () ->
+    assertThrows(IllegalStateException.class, () ->
         applicationService.createApplication(memberId, LocalDate.of(2019, 4, 3)));
   }
 
@@ -127,7 +127,7 @@ class ApplicationServiceTest {
     ApplicationService applicationService = new ApplicationService(
         entry, festivalApplicationPolicy);
 
-    assertThrows(BusinessErrorException.class, () ->
+    assertThrows(EntryStatusIsNotRecruitingException.class, () ->
         applicationService.createApplication(memberId, LocalDate.of(2019, 4, 1)));
   }
 
@@ -152,7 +152,7 @@ class ApplicationServiceTest {
     ApplicationService applicationService = new ApplicationService(
         entry, festivalApplicationPolicy);
 
-    assertThrows(BusinessErrorException.class, () ->
+    assertThrows(EntryStatusIsNotRecruitingException.class, () ->
         applicationService.createApplication(memberId, LocalDate.of(2019, 4, 1)));
   }
 
@@ -169,7 +169,7 @@ class ApplicationServiceTest {
         new Amount(BigDecimal.valueOf(1000)), new NumberOfPeople(0),
         LocalDate.of(2019, 4, 1),
         LocalDate.of(2019, 4, 2),
-        EntryStatus.underLottery, LocalDate.of(2019, 4, 3), new EntryId(null));
+        EntryStatus.recruiting, LocalDate.of(2019, 4, 3), new EntryId(null));
 
     Application application = Application.createEntityForEntry(
         festivalId,
@@ -186,7 +186,7 @@ class ApplicationServiceTest {
     ApplicationService applicationService = new ApplicationService(
         entry, festivalApplicationPolicy);
 
-    assertThrows(BusinessErrorException.class, () ->
+    assertThrows(HasAlreadyApplyForSameFestivalException.class, () ->
         applicationService.createApplication(memberId, LocalDate.of(2019, 4, 1)));
   }
 }
