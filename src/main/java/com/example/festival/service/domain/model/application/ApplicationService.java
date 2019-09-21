@@ -26,7 +26,7 @@ public class ApplicationService {
    * 参加申込オブジェクトを生成して返す.
    * @return 参加申込オブジェクト
    */
-  public Application applyEntry(MemberId memberId, LocalDate applicationDate) {
+  public Application createApplication(MemberId memberId, LocalDate applicationDate) {
 
     if (entry.entryStatus() != EntryStatus.recruiting) {
       throw new BusinessErrorException("指定した大会は現在募集を行っておりません");

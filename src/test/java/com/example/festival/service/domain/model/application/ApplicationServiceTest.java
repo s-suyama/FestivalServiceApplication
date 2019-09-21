@@ -45,7 +45,8 @@ class ApplicationServiceTest {
     ApplicationService applicationService = new ApplicationService(
         entry, festivalApplicationPolicy);
 
-    Application application = applicationService.applyEntry(memberId, LocalDate.of(2019, 4, 1));
+    Application application =
+        applicationService.createApplication(memberId, LocalDate.of(2019, 4, 1));
 
     assertAll("application",
         () -> assertEquals(Integer.valueOf(1), application.festivalId.value(), "festivalId"),
@@ -77,7 +78,7 @@ class ApplicationServiceTest {
         entry, festivalApplicationPolicy);
 
     assertThrows(BusinessErrorException.class, () ->
-        applicationService.applyEntry(memberId, LocalDate.of(2019, 3, 30)));
+        applicationService.createApplication(memberId, LocalDate.of(2019, 3, 30)));
   }
 
   @DisplayName("募集終了日より後の申込時に業務例外を throw すること")
@@ -102,7 +103,7 @@ class ApplicationServiceTest {
         entry, festivalApplicationPolicy);
 
     assertThrows(BusinessErrorException.class, () ->
-        applicationService.applyEntry(memberId, LocalDate.of(2019, 4, 3)));
+        applicationService.createApplication(memberId, LocalDate.of(2019, 4, 3)));
   }
 
   @DisplayName("参加者確定の状態で申し込んだ場合、業務例外を throw すること")
@@ -127,7 +128,7 @@ class ApplicationServiceTest {
         entry, festivalApplicationPolicy);
 
     assertThrows(BusinessErrorException.class, () ->
-        applicationService.applyEntry(memberId, LocalDate.of(2019, 4, 1)));
+        applicationService.createApplication(memberId, LocalDate.of(2019, 4, 1)));
   }
 
   @DisplayName("抽選中の状態で申し込んだ場合、業務例外を throw すること")
@@ -152,7 +153,7 @@ class ApplicationServiceTest {
         entry, festivalApplicationPolicy);
 
     assertThrows(BusinessErrorException.class, () ->
-        applicationService.applyEntry(memberId, LocalDate.of(2019, 4, 1)));
+        applicationService.createApplication(memberId, LocalDate.of(2019, 4, 1)));
   }
 
   @DisplayName("既にその大会に申込済みの場合、業務例外を throw すること")
@@ -186,6 +187,6 @@ class ApplicationServiceTest {
         entry, festivalApplicationPolicy);
 
     assertThrows(BusinessErrorException.class, () ->
-        applicationService.applyEntry(memberId, LocalDate.of(2019, 4, 1)));
+        applicationService.createApplication(memberId, LocalDate.of(2019, 4, 1)));
   }
 }

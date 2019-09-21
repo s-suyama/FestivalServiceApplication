@@ -66,7 +66,7 @@ public class ApplicationCommandService {
     final ApplicationService applicationService =
         new ApplicationService(entry, festivalApplicationPolicy);
 
-    final Application application = applicationService.applyEntry(memberId, applicationDate);
+    final Application application = applicationService.createApplication(memberId, applicationDate);
 
     entry.incrementApplicationNumbers();
     entryRepository.saveEntry(entry);
