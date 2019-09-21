@@ -28,7 +28,7 @@ public class Application implements Entity {
   /**
    * エントリ申込のためのオブジェクトを生成して返す.
    */
-  public static Application createEntityForEntry(
+  static Application createEntityForEntry(
       FestivalId festivalId,
       MemberId memberId,
       EntryId entryId,

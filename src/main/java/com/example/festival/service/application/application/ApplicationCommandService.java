@@ -3,6 +3,7 @@ package com.example.festival.service.application.application;
 import com.example.festival.service.domain.model.application.Application;
 import com.example.festival.service.domain.model.application.ApplicationRepository;
 import com.example.festival.service.domain.model.application.ApplicationService;
+import com.example.festival.service.domain.model.application.FestivalApplicationPolicy;
 import com.example.festival.service.domain.model.entry.Entry;
 import com.example.festival.service.domain.model.entry.EntryId;
 import com.example.festival.service.domain.model.entry.EntryRepository;
@@ -44,20 +45,13 @@ public class ApplicationCommandService {
   public void applyForEntry(ApplyForEntryRequest request) {
 
     final FestivalId festivalId = request.festivalId();
-    final MemberId memberId = request.memberId();
     final EntryId entryId = request.entryId();
+    final MemberId memberId = request.memberId();
     final LocalDate applicationDate = request.getApplicationDate();
 
-    final Member member = memberRepository.findMember(request.memberId());
+    final Member member = memberRepository.findMember(memberId);
     if (member == null) {
       throw new BusinessErrorException("存在しない会員です");
-    }
-
-    final Application alreadyApplication =
-        applicationRepository.findApplication(festivalId, memberId);
-
-    if (alreadyApplication != null) {
-      throw new BusinessErrorException("指定した大会には既に申し込み済みです");
     }
 
     final Entry entry = entryRepository.findEntry(festivalId, entryId);
@@ -66,9 +60,13 @@ public class ApplicationCommandService {
       throw new BusinessErrorException("存在しないエントリ枠です");
     }
 
-    ApplicationService applicationService = new ApplicationService(member, entry);
+    final FestivalApplicationPolicy festivalApplicationPolicy =
+        applicationRepository.createFestivalApplicationPolicy(festivalId, memberId);
 
-    final Application application = applicationService.applyEntry();
+    final ApplicationService applicationService =
+        new ApplicationService(entry, festivalApplicationPolicy);
+
+    final Application application = applicationService.applyEntry(memberId, applicationDate);
 
     entry.incrementApplicationNumbers();
     entryRepository.saveEntry(entry);
