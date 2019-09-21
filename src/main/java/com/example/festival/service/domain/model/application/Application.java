@@ -44,6 +44,13 @@ public class Application implements Entity {
     return result;
   }
 
+  /**
+   * 入金する.
+   */
+  public void pay(LocalDate paymentDate, PointAmount usePoints) {
+    this.payment = new Payment(paymentDate, usePoints);
+  }
+
   public FestivalId festivalId() {
     return festivalId;
   }
@@ -62,12 +69,5 @@ public class Application implements Entity {
 
   public Payment payment() {
     return payment;
-  }
-
-  /**
-   * 入金する.
-   */
-  public void pay(LocalDate paymentDate, PointAmount usePoints) {
-    this.payment = new Payment(paymentDate, usePoints);
   }
 }
