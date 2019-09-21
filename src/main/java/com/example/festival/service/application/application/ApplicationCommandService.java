@@ -2,6 +2,7 @@ package com.example.festival.service.application.application;
 
 import com.example.festival.service.domain.model.application.Application;
 import com.example.festival.service.domain.model.application.ApplicationRepository;
+import com.example.festival.service.domain.model.application.ApplicationService;
 import com.example.festival.service.domain.model.entry.Entry;
 import com.example.festival.service.domain.model.entry.EntryId;
 import com.example.festival.service.domain.model.entry.EntryRepository;
@@ -65,14 +66,9 @@ public class ApplicationCommandService {
       throw new BusinessErrorException("存在しないエントリ枠です");
     }
 
-    final Application application = Application.createEntityForEntry(
-        festivalId,
-        memberId,
-        entryId,
-        applicationDate
-    );
+    ApplicationService applicationService = new ApplicationService(member, entry);
 
-    entry.validateAndThrowBusinessErrorIfHasErrorForApplication(application);
+    final Application application = applicationService.applyEntry();
 
     entry.incrementApplicationNumbers();
     entryRepository.saveEntry(entry);

@@ -26,4 +26,8 @@ public class Member implements Entity {
 
   private Member() {
   }
+
+  public MemberId memberId() {
+    return memberId;
+  }
 }
