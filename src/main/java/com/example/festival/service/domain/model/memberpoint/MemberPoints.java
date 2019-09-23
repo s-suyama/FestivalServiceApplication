@@ -58,7 +58,6 @@ public class MemberPoints {
         x = x.subtract(availablePoint.value());
       } else {
         memberPoint.use(new PointAmount(x));
-        x = BigDecimal.ZERO;
         break;
       }
     }
