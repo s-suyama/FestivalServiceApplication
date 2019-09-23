@@ -13,6 +13,10 @@ public class FestivalApplicationPolicy {
     this.applicationList = new ArrayList<>(applicationList);
   }
 
+  /**
+   * 引数で指定した会員が、引数で指定した大会に既に参加申込しているかどうかを返す.
+   * 既に申し込み済みの場合、 true を返す.
+   */
   boolean hasAlreadyApplyForSameFestival(MemberId memberId, FestivalId festivalId) {
 
     for (Application application : applicationList) {
