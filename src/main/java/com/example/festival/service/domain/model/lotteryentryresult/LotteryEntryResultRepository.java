@@ -11,5 +11,11 @@ public interface LotteryEntryResultRepository {
       MemberId memberId,
       EntryId entryId);
 
+  LotteryEntryResults findLotteryEntryResults(
+      FestivalId festivalId,
+      MemberId memberId,
+      EntryId entryId
+  );
+
   void saveLotteryEntryResult(LotteryEntryResult lotteryEntryResult);
 }

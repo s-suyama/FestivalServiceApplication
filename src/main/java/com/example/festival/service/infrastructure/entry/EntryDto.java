@@ -42,4 +42,8 @@ public class EntryDto {
 
   private EntryDto() {
   }
+
+  public EntryId followingEntryId() {
+    return followingEntryId;
+  }
 }

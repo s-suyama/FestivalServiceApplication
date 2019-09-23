@@ -3,13 +3,10 @@ package com.example.festival.service.application.payment;
 import com.example.festival.service.domain.model.application.Application;
 import com.example.festival.service.domain.model.application.ApplicationRepository;
 import com.example.festival.service.domain.model.entry.Entry;
-import com.example.festival.service.domain.model.entry.EntryId;
 import com.example.festival.service.domain.model.entry.EntryRepository;
-import com.example.festival.service.domain.model.entry.LotteryEntry;
 import com.example.festival.service.domain.model.festival.FestivalId;
-import com.example.festival.service.domain.model.lotteryentryresult.LotteryEntryResult;
 import com.example.festival.service.domain.model.lotteryentryresult.LotteryEntryResultRepository;
-import com.example.festival.service.domain.model.lotteryentryresult.LotteryResult;
+import com.example.festival.service.domain.model.lotteryentryresult.LotteryEntryResults;
 import com.example.festival.service.domain.model.member.MemberId;
 import com.example.festival.service.domain.model.memberpoint.MemberPointRepository;
 import com.example.festival.service.domain.model.memberpoint.MemberPoints;
@@ -62,22 +59,12 @@ public class PaymentCommandService {
     Entry entry = entryRepository.findEntry(festivalId, application.entryId());
     if (entry.isLotteryEntry()) {
       // 対象のエントリが抽選なら当選しているかを確認する
-      LotteryEntryResult entryResult = lotteryEntryResultRepository.findLotteryEntryResult(
-          festivalId, memberId, entry.entryId());
+      LotteryEntryResults lotteryEntryResults =
+          lotteryEntryResultRepository.findLotteryEntryResults(
+              festivalId, memberId, entry.entryId());
 
-      if (entryResult.lotteryResult() == LotteryResult.failed) {
-        EntryId followingEntryId = ((LotteryEntry)entry).followingEntryId();
-        if (followingEntryId == null) {
-          throw new BusinessErrorException("対象の大会には当選していません");
-        } else {
-          LotteryEntryResult followingEntryResult =
-              lotteryEntryResultRepository.findLotteryEntryResult(
-                  festivalId, memberId, followingEntryId);
-
-          if (followingEntryResult.lotteryResult() == LotteryResult.failed) {
-            throw new BusinessErrorException("対象の大会には当選していません");
-          }
-        }
+      if (!lotteryEntryResults.winning()) {
+        throw new BusinessErrorException("対象の大会には当選していません");
       }
     }
 

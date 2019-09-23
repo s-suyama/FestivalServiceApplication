@@ -178,13 +178,28 @@ class PayToApplicationTest {
             .column("application_end_date", LocalDate.of(2019, 9, 20))
             .column("entry_status", "participantConfirmation")
             .end()
+            .row()
+            .column("festival_id", 6)
+            .column("entry_id", 9)
+            .column("entry_name", "抽選枠")
+            .column("entry_description", "通常枠です")
+            .column("event_code", 1)
+            .column("capacity", 5)
+            .column("participation_fees", 1000)
+            .column("application_numbers", 10)
+            .column("first_arrival_lottery_type", "lottery")
+            .column("application_start_date", LocalDate.of(2019, 9, 21))
+            .column("application_end_date", LocalDate.of(2019, 9, 25))
+            .column("entry_status", "participantConfirmation")
+            .end()
             .build();
 
     final Operation insertLotteryEntries =
         insertInto("lottery_entries")
             .columns("festival_id", "entry_id", "lottery_date", "following_entry_id")
             .values(6, 7, LocalDate.of(2019, 9, 16), 8)
-            .values(6, 8, LocalDate.of(2018, 9, 26), null)
+            .values(6, 8, LocalDate.of(2018, 9, 26), 9)
+            .values(6, 9, LocalDate.of(2018, 9, 30), null)
             .build();
 
     final Operation insertMembers =
@@ -356,6 +371,67 @@ class PayToApplicationTest {
         .value("given_point_date").isEqualTo(DateValue.of(2019, 4, 25))
         .value("given_point").isEqualTo(100)
         .value("used_point").isEqualTo(50);
+  }
+
+  @DisplayName("多段階抽選で当選した大会への入金が行えること")
+  @Test
+  void testSuccess() throws Exception {
+
+    final Operation insertApplications =
+        insertInto("applications")
+            .row()
+            .column("festival_id", 6)
+            .column("member_id", 1)
+            .column("entry_id", 7)
+            .column("application_date", LocalDate.of(2019, 9, 11))
+            .column("payment_date", null)
+            .column("use_points", 0)
+            .end()
+            .build();
+
+    final Operation insertLotteryEntryResults =
+        insertInto("lottery_entry_results")
+            .row()
+            .column("festival_id", 6)
+            .column("member_id", 1)
+            .column("entry_id", 7)
+            .column("lottery_result", "failed")
+            .end()
+            .row()
+            .column("festival_id", 6)
+            .column("member_id", 1)
+            .column("entry_id", 8)
+            .column("lottery_result", "failed")
+            .end()
+            .row()
+            .column("festival_id", 6)
+            .column("member_id", 1)
+            .column("entry_id", 9)
+            .column("lottery_result", "winning")
+            .end()
+            .build();
+
+    Operation operation = sequenceOf(
+        insertApplications,
+        insertLotteryEntryResults);
+
+    Destination dest = new DataSourceDestination(dataSource);
+    DbSetup dbSetup = new DbSetup(dest, operation);
+    dbSetupTracker.launchIfNecessary(dbSetup);
+
+    PaymentRequest request = new PaymentRequest();
+    request.setFestivalId(6);
+    request.setMemberId(1);
+    request.setPaymentDate(LocalDate.of(2019, 10, 1));
+    request.setUsePoints(BigDecimal.ZERO);
+
+    final String requestJson = objectMapper.writeValueAsString(request);
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/applications/payment")
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(requestJson))
+        .andExpect(status().isOk());
   }
 
   @DisplayName("申込を行っていない大会への入金がエラーになること")
