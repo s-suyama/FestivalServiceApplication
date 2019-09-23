@@ -1,5 +1,7 @@
 package com.example.festival.service.domain.model.memberpoint;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -18,7 +20,7 @@ class MemberPointTest {
   void testUseSuccess1() {
 
     MemberPoint memberPoint = fixture();
-    memberPoint.use(BigDecimal.valueOf(3));
+    memberPoint.use(new PointAmount(BigDecimal.valueOf(3)));
 
     assertAll("memberPoint",
         () -> assertEquals(Integer.valueOf(1), memberPoint.memberId().value()),
@@ -33,7 +35,7 @@ class MemberPointTest {
   void testUseSuccess2() {
 
     MemberPoint memberPoint = fixture();
-    memberPoint.use(BigDecimal.valueOf(6));
+    memberPoint.use(new PointAmount(BigDecimal.valueOf(6)));
 
     assertAll("memberPoint",
         () -> assertEquals(Integer.valueOf(1), memberPoint.memberId().value()),
@@ -48,7 +50,35 @@ class MemberPointTest {
   void testUseError() {
 
     MemberPoint memberPoint = fixture();
-    assertThrows(IllegalArgumentException.class, () -> memberPoint.use(BigDecimal.valueOf(7)));
+    assertThrows(IllegalArgumentException.class,
+        () -> memberPoint.use(new PointAmount(BigDecimal.valueOf(7))));
+  }
+
+  @DisplayName("利用可能ポイント数を正しく取得できること")
+  @Test
+  void testAvailablePoint1() {
+
+    MemberPoint memberPoint = fixture();
+    BigDecimal result = memberPoint.availablePoint(LocalDate.of(2019, 5, 1)).value();
+    assertThat(result, is(BigDecimal.valueOf(6)));
+  }
+
+  @DisplayName("有効期限を過ぎている場合、利用可能ポイント数がゼロであること")
+  @Test
+  void testAvailablePoint2() {
+
+    MemberPoint memberPoint = fixture2();
+    BigDecimal result = memberPoint.availablePoint(LocalDate.of(2019, 5, 1)).value();
+    assertThat(result, is(BigDecimal.ZERO));
+  }
+
+  @DisplayName("ポイントをすべて使い切っている場合、利用可能ポイント数がゼロであること")
+  @Test
+  void testAvailablePoint3() {
+
+    MemberPoint memberPoint = fixture3();
+    BigDecimal result = memberPoint.availablePoint(LocalDate.of(2019, 5, 1)).value();
+    assertThat(result, is(BigDecimal.ZERO));
   }
 
   private MemberPoint fixture() {
@@ -58,6 +88,24 @@ class MemberPointTest {
         LocalDate.of(2019, 4, 1),
         new PointAmount(BigDecimal.valueOf(10)),
         new PointAmount(BigDecimal.valueOf(4))
+    );
+  }
+
+  private MemberPoint fixture2() {
+    return new MemberPoint(
+        new MemberId(1),
+        LocalDate.of(2018, 4, 1),
+        new PointAmount(BigDecimal.valueOf(10)),
+        new PointAmount(BigDecimal.valueOf(4))
+    );
+  }
+
+  private MemberPoint fixture3() {
+    return new MemberPoint(
+        new MemberId(1),
+        LocalDate.of(2019, 3, 30),
+        new PointAmount(BigDecimal.valueOf(10)),
+        new PointAmount(BigDecimal.valueOf(10))
     );
   }
 }

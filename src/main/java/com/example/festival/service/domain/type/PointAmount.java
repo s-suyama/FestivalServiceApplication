@@ -41,4 +41,19 @@ public class PointAmount implements ValueObject {
   public boolean isPositive() {
     return value.compareTo(BigDecimal.ZERO) > 0;
   }
+
+  /**
+   * 加算処理を行い、加算結果を返す.
+   */
+  public PointAmount add(PointAmount other) {
+
+    if (other == null) {
+      return new PointAmount(this.value);
+    }
+
+    BigDecimal result = this.value;
+    result = result.add(other.value);
+
+    return new PointAmount(result);
+  }
 }

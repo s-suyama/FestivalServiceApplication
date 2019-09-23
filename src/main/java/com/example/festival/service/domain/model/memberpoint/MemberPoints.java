@@ -30,39 +30,37 @@ public class MemberPoints {
    * 引数のポイントが使えるかどうかを判定し、有効期限の近いポイントから使用する.
    * なお、保持する MemberPoint オブジェクトの状態を変更する。
    */
-  public void usePoints(LocalDate paymentDate, PointAmount pointAmount) {
+  public void usePoints(LocalDate paymentDate, PointAmount usePointAmount) {
+
+    PointAmount pointBalance = pointBalance(paymentDate);
+    if (pointBalance.value().compareTo(usePointAmount.value()) < 0) {
+      throw new BusinessErrorException("ポイント数が不足しています");
+    }
 
     // この値がゼロになるまでこれまで付与されたポイントからポイントを使用していく
-    BigDecimal x = pointAmount.value();
+    BigDecimal x = usePointAmount.value();
 
     for (MemberPoint memberPoint : list) {
 
       // 有効期限のチェック
-      LocalDate expirationDate = memberPoint.givenPointDate().plusYears(1);
-      if (paymentDate.compareTo(expirationDate) > 0) {
+      if (memberPoint.hasPassedExpirationDate(paymentDate)) {
         continue;
       }
 
       // ポイント残高のチェック
-      BigDecimal availableUsePoint = memberPoint.givenPoint().value()
-          .subtract(memberPoint.usedPoint().value());
-      if (availableUsePoint.compareTo(BigDecimal.ZERO) == 0) {
+      PointAmount availablePoint = memberPoint.availablePoint(paymentDate);
+      if (!availablePoint.isPositive()) {
         continue;
       }
 
-      if (availableUsePoint.compareTo(x) <= 0) {
-        memberPoint.use(availableUsePoint);
-        x = x.subtract(availableUsePoint);
+      if (availablePoint.value().compareTo(x) <= 0) {
+        memberPoint.use(availablePoint);
+        x = x.subtract(availablePoint.value());
       } else {
-        memberPoint.use(x);
+        memberPoint.use(new PointAmount(x));
         x = BigDecimal.ZERO;
         break;
       }
-    }
-
-    // 有効期限の近いものからポイントを使用していき、利用したいポイントに満たなかった場合エラー
-    if (x.compareTo(BigDecimal.ZERO) > 0) {
-      throw new BusinessErrorException("ポイント数が不足しています");
     }
   }
 
@@ -77,5 +75,17 @@ public class MemberPoints {
 
   public int size() {
     return list.size();
+  }
+
+  private PointAmount pointBalance(LocalDate paymentDate) {
+
+    PointAmount result = new PointAmount(BigDecimal.ZERO);
+
+    for (MemberPoint memberPoint : list) {
+      PointAmount availablePoint = memberPoint.availablePoint(paymentDate);
+      result = result.add(availablePoint);
+    }
+
+    return result;
   }
 }
